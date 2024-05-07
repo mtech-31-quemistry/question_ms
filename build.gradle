@@ -1,119 +1,27 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.1.3'
-	id 'io.spring.dependency-management' version '1.1.3'
-	id 'jacoco'
-	id 'org.sonarqube' version '4.3.1.3277'
-	id "org.flywaydb.flyway" version "9.22.1"
-	//id 'checkstyle'
+	id 'org.springframework.boot' version '3.3.0-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'com.quemiztry'
+group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+	sourceCompatibility = '21'
 }
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
 }
 
 dependencies {
-	runtimeOnly "org.springframework.boot:spring-boot-starter-actuator"
-
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-	implementation 'org.flywaydb:flyway-core'
-
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
-	runtimeOnly 'org.postgresql:postgresql'
-
-	annotationProcessor('org.projectlombok:lombok-mapstruct-binding:0.2.0')
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	//testImplementation 'org.springframework.security:spring-security-test'
-
-	implementation 'javax.persistence:javax.persistence-api:2.2'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'com.amazonaws:aws-java-sdk-sns:1.12.112'
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-	finalizedBy jacocoTestReport
-}
-
-task installLocalGitHook(type: Copy){
-	from new File(rootProject.rootDir, 'scripts/pre-commit')
-	into { new File(rootProject.rootDir, '.git/hooks')}
-	fileMode 0775
-}
-
-build.dependsOn installLocalGitHook
-//
-//checkstyle {
-//	toolVersion = "10.10.0"
-//	configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
-//	ignoreFailures = true
-//
-//	checkstyleMain {
-//		source ='src/main/java'
-//	}
-//
-//	checkstyleTest {
-//		source ='src/test/java'
-//	}
-//}
-
-//sonarqube {
-//	properties {
-//		property "sonar.projectKey", "mtech-batch-31_shiok-jobs-user-ms"
-//		property "sonar.organization", "mtech-batch-31"
-//		property "sonar.host.url", "https://sonarcloud.io"
-//		property 'sonar.coverage.jacoco.xmlReportPaths', "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
-//		property 'sonar.coverage.exclusions', "**/entity/**, **/model/**, **/Application*, **/config/*.java"
-//	}
-//}
-
-bootJar {
-	archiveFileName = "quemiztry_question_ms.jar"
-	archiveClassifier.set(null)
-}
-
-jacocoTestReport {
-	dependsOn test
-
-	reports {
-		xml.required = true
-	}
-
-	afterEvaluate {
-		excludedClassFilesForReport(classDirectories)
-	}
-}
-
-private excludedClassFilesForReport(classDirectories) {
-	classDirectories.setFrom(files(classDirectories.files.collect {
-		fileTree(dir: it, exclude: [
-				'**/entity/*.class',
-				'**/model/**/*.class',
-				'**/model/*.class',
-				'**/Application.class'
-		])
-	}))
 }
