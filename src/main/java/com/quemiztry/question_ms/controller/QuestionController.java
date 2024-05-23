@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/questions")
 public class QuestionController {
 
-
-
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("test ok");
