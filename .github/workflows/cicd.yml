@@ -43,108 +43,6 @@ jobs:
       - name: Run unit tests
         run: ./gradlew test
 
-  generate_jar:
-    needs: code_scan
-    name: Generate Jar File
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Check_and_build
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'gradle'
-      - run: ./gradlew bootJar
-
-      - name: Upload Project Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: spring-boot-artifact
-          path: |
-            build/libs/quemiztry_question_ms.jar
-            build/reports
-
-  build_and_push_image:
-    needs: generate_jar
-    name: Push Docker Image to ECR
-    runs-on: ubuntu-latest
-    env:
-      LATEST_IMAGE_NAME: ${{ secrets.ECR_REPOSITORY_URL }}:latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Download Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: spring-boot-artifact
-          path: build
-
-      - name: Build and Push Image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ${{ env.IMAGE_NAME }}
-            ${{ env.LATEST_IMAGE_NAME }}
-
-  deploy_to_eks:
-    name: Deploy to EKS
-    needs: build_and_push_image
-    runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ${{ secrets.ECR_REPOSITORY_URL }}:latest
-      DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
-      DATASOURCE_USER_ID: ${{ secrets.DATASOURCE_USER_ID }}
-      DATASOURCE_SECRET: ${{ secrets.DATASOURCE_SECRET }}
-      SNS_TOPIC_ARN: ${{ secrets.SNS_TOPIC_ARN }}
-      PII_ENCRYPT_KEY: ${{ secrets.PII_ENCRYPT_KEY }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v2.0
-        with:
-          version: 'v1.24.0' # default is latest stable
-        id: install
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Update kube config
-        run: aws eks update-kubeconfig --name sj-eks
-
-      - name: Deploy to EKS
-        run: |
-          envsubst < kubernetes/deployment.yml | kubectl apply -f -          
-          kubectl rollout restart deployment/sj-user -n sj-ns          
-
   code_scan:
     needs: tests
     name: Analyze with SonarCloud
@@ -208,6 +106,108 @@ jobs:
           name: sast-artifact
           path: |
             build/sonar/report-task.txt
+
+  generate_jar:
+    needs: code_scan
+    name: Generate Jar File
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Check_and_build
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+      - run: ./gradlew bootJar
+
+      - name: Upload Project Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: spring-boot-artifact
+          path: |
+            build/libs/quemiztry_question_ms.jar
+            build/reports
+#
+#  build_and_push_image:
+#    needs: generate_jar
+#    name: Push Docker Image to ECR
+#    runs-on: ubuntu-latest
+#    env:
+#      LATEST_IMAGE_NAME: ${{ secrets.ECR_REPOSITORY_URL }}:latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#
+#      - name: Configure AWS credentials
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ${{ env.AWS_REGION }}
+#
+#      - name: Login to Amazon ECR
+#        id: login-ecr
+#        uses: aws-actions/amazon-ecr-login@v1
+#
+#      - name: Download Artifact
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: spring-boot-artifact
+#          path: build
+#
+#      - name: Build and Push Image
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: .
+#          file: ./Dockerfile
+#          push: true
+#          tags: |
+#            ${{ env.IMAGE_NAME }}
+#            ${{ env.LATEST_IMAGE_NAME }}
+#
+#  deploy_to_eks:
+#    name: Deploy to EKS
+#    needs: build_and_push_image
+#    runs-on: ubuntu-latest
+#    env:
+#      IMAGE_NAME: ${{ secrets.ECR_REPOSITORY_URL }}:latest
+#      DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
+#      DATASOURCE_USER_ID: ${{ secrets.DATASOURCE_USER_ID }}
+#      DATASOURCE_SECRET: ${{ secrets.DATASOURCE_SECRET }}
+#      SNS_TOPIC_ARN: ${{ secrets.SNS_TOPIC_ARN }}
+#      PII_ENCRYPT_KEY: ${{ secrets.PII_ENCRYPT_KEY }}
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      - name: Install kubectl
+#        uses: azure/setup-kubectl@v2.0
+#        with:
+#          version: 'v1.24.0' # default is latest stable
+#        id: install
+#
+#      - name: Configure AWS Credentials
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ${{ env.AWS_REGION }}
+#
+#      - name: Login to Amazon ECR
+#        id: login-ecr
+#        uses: aws-actions/amazon-ecr-login@v1
+#
+#      - name: Update kube config
+#        run: aws eks update-kubeconfig --name sj-eks
+#
+#      - name: Deploy to EKS
+#        run: |
+#          envsubst < kubernetes/deployment.yml | kubectl apply -f -
+#          kubectl rollout restart deployment/sj-user -n sj-ns
 
 #  zap_scan:
 #    needs: deploy_to_eks
