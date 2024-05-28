@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Question Microservice CICD
 
 on:
   push:
@@ -10,10 +10,16 @@ on:
 permissions: write-all
 
 env:
-  AWS_REGION: ap-southeast-1
+  AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  ECR_REPOSITORY_URL: ${{ secrets.ECR_REPOSITORY_URL }}
+  PROJECT_KEY: ${{ secrets.PROJECT_KEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   IMAGE_NAME: ${{ secrets.ECR_REPOSITORY_URL }}:${{ github.sha }}
+  LATEST_IMAGE_NAME: ${{ secrets.ECR_REPOSITORY_URL }}:latest
+  DOMAIN: question_ms
 
 jobs:
   tests:
@@ -21,19 +27,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # checkout the codes
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 21
-          distribution: 'zulu' # Alternative distribution options are available
+          distribution: 'temurin' # Alternative distribution options are available
 
       # cache Gradle packages
       - name: Cache Gradle packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
@@ -43,183 +49,108 @@ jobs:
       - name: Run unit tests
         run: ./gradlew test
 
-  code_scan:
-    needs: tests
-    name: Analyze with SonarCloud
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Build and analyze
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --info
-
-      - name: Get SonarCloud quality gate status
-        run: |
-          STATUS=$(curl -s -u "${{ secrets.SONAR_TOKEN }}": "https://sonarcloud.io/api/qualitygates/project_status?projectKey=mtech-31-quemistry_question_ms" | jq -r .projectStatus.status)
-          echo "Quality gate status is $STATUS"   
-          if [[ "$STATUS" != "OK" ]]; then
-          echo "Quality gate failed"
-            exit 1
-          fi
-
-      - name: Upload Code Coverage Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-coverage-artifact
-          path: |
-            build/reports/jacoco/test/html/
-
-      - name: Upload Lint (Checkstyle) Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: lint-artifact
-          path: |
-            build/reports/checkstyle/
-
-      - name: Upload SonarCloud Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: sast-artifact
-          path: |
-            build/sonar/report-task.txt
-
   generate_jar:
     needs: code_scan
     name: Generate Jar File
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Check_and_build
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
           cache: 'gradle'
       - run: ./gradlew bootJar
 
-      - name: Upload Project Artifact
-        uses: actions/upload-artifact@v2
+      - name: Upload Standalone Executable Jar
+        uses: actions/upload-artifact@v4
         with:
-          name: spring-boot-artifact
+          name: spring-boot-jar
           path: |
-            build/libs/quemiztry_question_ms.jar
-            build/reports
-#
-#  build_and_push_image:
-#    needs: generate_jar
-#    name: Push Docker Image to ECR
-#    runs-on: ubuntu-latest
-#    env:
-#      LATEST_IMAGE_NAME: ${{ secrets.ECR_REPOSITORY_URL }}:latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#
-#      - name: Configure AWS credentials
-#        uses: aws-actions/configure-aws-credentials@v1
-#        with:
-#          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-#          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-#          aws-region: ${{ env.AWS_REGION }}
-#
-#      - name: Login to Amazon ECR
-#        id: login-ecr
-#        uses: aws-actions/amazon-ecr-login@v1
-#
-#      - name: Download Artifact
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: spring-boot-artifact
-#          path: build
-#
-#      - name: Build and Push Image
-#        uses: docker/build-push-action@v2
-#        with:
-#          context: .
-#          file: ./Dockerfile
-#          push: true
-#          tags: |
-#            ${{ env.IMAGE_NAME }}
-#            ${{ env.LATEST_IMAGE_NAME }}
-#
-#  deploy_to_eks:
-#    name: Deploy to EKS
-#    needs: build_and_push_image
-#    runs-on: ubuntu-latest
-#    env:
-#      IMAGE_NAME: ${{ secrets.ECR_REPOSITORY_URL }}:latest
-#      DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
-#      DATASOURCE_USER_ID: ${{ secrets.DATASOURCE_USER_ID }}
-#      DATASOURCE_SECRET: ${{ secrets.DATASOURCE_SECRET }}
-#      SNS_TOPIC_ARN: ${{ secrets.SNS_TOPIC_ARN }}
-#      PII_ENCRYPT_KEY: ${{ secrets.PII_ENCRYPT_KEY }}
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#
-#      - name: Install kubectl
-#        uses: azure/setup-kubectl@v2.0
-#        with:
-#          version: 'v1.24.0' # default is latest stable
-#        id: install
-#
-#      - name: Configure AWS Credentials
-#        uses: aws-actions/configure-aws-credentials@v1
-#        with:
-#          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-#          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-#          aws-region: ${{ env.AWS_REGION }}
-#
-#      - name: Login to Amazon ECR
-#        id: login-ecr
-#        uses: aws-actions/amazon-ecr-login@v1
-#
-#      - name: Update kube config
-#        run: aws eks update-kubeconfig --name sj-eks
-#
-#      - name: Deploy to EKS
-#        run: |
-#          envsubst < kubernetes/deployment.yml | kubectl apply -f -
-#          kubectl rollout restart deployment/sj-user -n sj-ns
+            build/libs/${{ env.DOMAIN }}.jar
 
-#  zap_scan:
-#    needs: deploy_to_eks
-#    runs-on: ubuntu-latest
-#    name: Zap Scan
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#        with:
-#          ref: main
-#
-#      - name: ZAP Scan
-#        uses: zaproxy/action-full-scan@v0.10.0
-#        with:
-#          target: 'https://j0o5s8d9pe.execute-api.ap-southeast-1.amazonaws.com/shiokjobs/users'
+  build_and_push_image:
+    needs: generate_jar
+    name: Push Docker Image to ECR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: spring-boot-jar
+          path: build/libs/
+
+      - name: Build and Push Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}
+            ${{ env.LATEST_IMAGE_NAME }}
+
+  code_scan:
+    needs: tests
+    name: Analyze with SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Build and analyze
+        run: ./gradlew build sonar --info
+
+      - name: Get SonarCloud quality gate status
+        run: |
+          STATUS=$(curl -s -u "${{ env.SONAR_TOKEN }}": "https://sonarcloud.io/api/qualitygates/project_status?projectKey=${{ env.PROJECT_KEY }}" | jq -r .projectStatus.status)
+          echo "Quality gate status is $STATUS"   
+          if [[ "$STATUS" != "OK" ]]; then
+          echo "Quality gate failed"
+            exit 1
+          fi
+
+      - name: Upload Code Analysis Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-artifact
+          path: |
+            build/reports/

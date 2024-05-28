@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.3.0-SNAPSHOT'
-	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.springframework.boot' version '3.3.0'
+	id 'io.spring.dependency-management' version '1.1.5'
 	id "org.sonarqube" version '4.4.1.3373'
 }
 
@@ -9,14 +9,11 @@ group = 'com.quemiztry.question_ms'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = '21'
 }
 
 repositories {
 	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
-	maven { url 'https://repo.spring.io/snapshot' }
 }
 
 dependencies {
@@ -33,10 +30,19 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+bootJar {
+	archiveFileName = "question_ms.jar"
+	archiveClassifier.set(null)
+}
+
 task installLocalGitHook(type: Copy){
 	from new File(rootProject.rootDir, 'scripts/pre-commit')
 	into { new File(rootProject.rootDir, '.git/hooks')}
 	fileMode 0775
+}
+
+tasks.named('build') {
+	finalizedBy('installLocalGitHook')
 }
 
 sonar {
