@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: question_ms
+
+  data:
+    dynamodb:
+      entity2ddl:
+        gsiProjectionType: ALL
+        readCapacity: 10
+        writeCapacity: 1
+
+amazon:
+  dynamodb:
+    endpoint: ${DATABASE_URL}

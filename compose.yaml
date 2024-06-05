@@ -1,11 +1,31 @@
-version: '3.8'
 services:
-  dynamodb-local:
-    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
-    image: "amazon/dynamodb-local:latest"
-    container_name: dynamodb-local
+  db:
+    image: amazon/dynamodb-local:latest
+    container_name: question-ms-db
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath ./data
     ports:
       - "8000:8000"
     volumes:
-      - "./docker/dynamodb:/home/dynamodblocal/data"
+      - dynamodb_data:/home/dynamodblocal/data
     working_dir: /home/dynamodblocal
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+          target: .
+    container_name: question-ms
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+
+    ports:
+      - "8080:8080"
+
+volumes:
+  dynamodb_data:
