@@ -2,7 +2,7 @@
     "taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:730335183958:task-definition/quemistry-ms-question:6",
     "containerDefinitions": [
         {
-            "name": "question_ms",
+            "name": "question-ms",
             "image": "730335183958.dkr.ecr.ap-southeast-1.amazonaws.com/question_ms_registry:latest",
             "cpu": 512,
             "memory": 1024,
