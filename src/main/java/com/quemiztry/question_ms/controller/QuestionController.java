@@ -1,6 +1,6 @@
 package com.quemiztry.question_ms.controller;
 
-import com.quemiztry.question_ms.model.QuestionDto;
+import com.quemiztry.question_ms.model.MCQDto;
 import com.quemiztry.question_ms.service.QuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -23,14 +23,15 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
-
     @GetMapping("/test")
     public ResponseEntity<String> test() {
+        log.info("GET /v1/questions/test called");
         return ResponseEntity.ok("test ok");
     }
 
     @PostMapping
-    public ResponseEntity<QuestionDto> saveQuestion(@RequestHeader HttpHeaders headers, @RequestBody QuestionDto questionDto) {
-        return ResponseEntity.ok(questionService.saveQuestion(questionDto));
+    public ResponseEntity<MCQDto> saveQuestion(@RequestHeader HttpHeaders headers, @RequestBody MCQDto MCQDto) {
+        log.info("POST /v1/questions");
+        return ResponseEntity.ok(questionService.saveQuestion(MCQDto));
     }
 }

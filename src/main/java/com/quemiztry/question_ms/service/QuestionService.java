@@ -1,8 +1,8 @@
 package com.quemiztry.question_ms.service;
 
-import com.quemiztry.question_ms.model.QuestionDto;
+import com.quemiztry.question_ms.model.MCQDto;
 
 public interface QuestionService {
 
-    QuestionDto saveQuestion(QuestionDto questionDto);
+    MCQDto saveQuestion(MCQDto MCQDto);
 }

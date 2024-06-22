@@ -1,7 +1,7 @@
 package com.quemiztry.question_ms.service;
 
 import com.quemiztry.question_ms.mapper.QuestionMapper;
-import com.quemiztry.question_ms.model.QuestionDto;
+import com.quemiztry.question_ms.model.MCQDto;
 import com.quemiztry.question_ms.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public QuestionDto saveQuestion(QuestionDto questionDto) {
-        return questionMapper.questionToQuestionDto(questionRepository.save(questionMapper.questionDtoToQuestion(questionDto)));
+    public MCQDto saveQuestion(MCQDto MCQDto) {
+        return questionMapper.questionToQuestionDto(questionRepository.save(questionMapper.questionDtoToQuestion(MCQDto)));
     }
 }

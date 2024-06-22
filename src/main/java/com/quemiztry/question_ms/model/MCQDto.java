@@ -12,12 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuestionDto {
+public class MCQDto {
 
     private Integer id;
     private String stem;
-    private List<OptionDTO> option;
-    private Integer isAnswer;
+    private List<OptionDto> options;
     private List<TopicDto> topics;
     private List<SkillDto> skills;
     private String status;
@@ -32,7 +31,7 @@ public class QuestionDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class OptionDTO {
+    public static class OptionDto {
         private Integer no;
         private String text;
         private String explanation;

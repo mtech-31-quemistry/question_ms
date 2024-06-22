@@ -12,3 +12,8 @@ spring:
 amazon:
   dynamodb:
     endpoint: ${DATABASE_URL}
+  aws:
+    accesskey: ${AWS_ACCESS_KEY}
+    secretkey: ${AWS_SECRET_KEY}
+    region:
+      static: ap-southeast-1

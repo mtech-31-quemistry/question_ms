@@ -1,7 +1,7 @@
 package com.quemiztry.question_ms.mapper;
 
-import com.quemiztry.question_ms.entity.Question;
-import com.quemiztry.question_ms.model.QuestionDto;
+import com.quemiztry.question_ms.entity.MCQ;
+import com.quemiztry.question_ms.model.MCQDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
@@ -11,8 +11,8 @@ public interface QuestionMapper {
 
     QuestionMapper INSTANCE = Mappers.getMapper(QuestionMapper.class);
 
-    QuestionDto questionToQuestionDto(Question question);
+    MCQDto questionToQuestionDto(MCQ MCQ);
 
 
-    Question questionDtoToQuestion(QuestionDto questionDto);
+    MCQ questionDtoToQuestion(MCQDto MCQDto);
 }
