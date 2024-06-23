@@ -1,4 +1,5 @@
-package com.quemiztry.question_ms.model;
+package com.quemistry.question_ms.model;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TopicDto {
+public class SkillDto {
 
     private Integer id;
     private String name;
+    private Integer topicId;
 }

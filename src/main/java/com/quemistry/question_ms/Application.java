@@ -1,4 +1,4 @@
-package com.quemiztry.question_ms;
+package com.quemistry.question_ms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

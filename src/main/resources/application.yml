@@ -13,7 +13,7 @@ amazon:
   dynamodb:
     endpoint: ${DATABASE_URL}
   aws:
-    accesskey: ${AWS_ACCESS_KEY}
-    secretkey: ${AWS_SECRET_KEY}
+    accesskey: ${AWS_ACCESS_KEY_ID}
+    secretkey: ${AWS_SECRET_ACCESS_KEY}
     region:
       static: ap-southeast-1

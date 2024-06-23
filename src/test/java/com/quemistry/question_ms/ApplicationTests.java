@@ -1,4 +1,4 @@
-package com.quemiztry.question_ms;
+package com.quemistry.question_ms;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
