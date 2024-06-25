@@ -12,3 +12,18 @@ spring:
 amazon:
   dynamodb:
     endpoint: ${DATABASE_URL}
+
+server:
+  port: 80
+
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: never
+  endpoints:
+    web:
+      base-path: /v1
+      path-mapping:
+        health: /questions/actuator
+
