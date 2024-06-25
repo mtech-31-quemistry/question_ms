@@ -1,6 +1,8 @@
 package com.quemistry.question_ms.controller;
 
 import com.quemistry.question_ms.model.MCQDto;
+import com.quemistry.question_ms.model.RetrieveMCQRequest;
+import com.quemistry.question_ms.model.RetrieveMCQResponse;
 import com.quemistry.question_ms.service.MCQService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -21,10 +23,10 @@ import java.util.Map;
 @RequestMapping("/v1/questions")
 public class QuestionController {
 
-    private final MCQService MCQService;
+    private final MCQService mcqService;
 
-    public QuestionController(MCQService MCQService) {
-        this.MCQService = MCQService;
+    public QuestionController(MCQService mcqService) {
+        this.mcqService = mcqService;
     }
 
     @GetMapping("health")
@@ -39,6 +41,18 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<MCQDto> saveQuestion(@RequestHeader HttpHeaders headers, @RequestBody MCQDto MCQDto) {
         log.info("POST /v1/questions");
-        return ResponseEntity.ok(MCQService.saveQuestion(MCQDto));
+        return ResponseEntity.ok(mcqService.saveQuestion(MCQDto));
     }
+
+    @GetMapping
+    public ResponseEntity<RetrieveMCQResponse> getQuestions(@RequestHeader HttpHeaders headers) {
+        log.info("GET /v1/questions");
+        return ResponseEntity.ok(mcqService.retrieveMCQs());
+    }
+
+//    @PostMapping("retrieve")
+//    public ResponseEntity<RetrieveMCQResponse> retrieveQuestion(@RequestHeader HttpHeaders headers, @RequestBody RetrieveMCQRequest retrieveMCQRequest) {
+//        log.info("POST /v1/questions/retrieve");
+//        return ResponseEntity.ok(mcqService.retrieveMCQs(retrieveMCQRequest));
+//    }
 }

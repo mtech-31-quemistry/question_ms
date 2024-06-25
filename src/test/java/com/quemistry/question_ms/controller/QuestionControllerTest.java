@@ -8,16 +8,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quemistry.question_ms.model.MCQDto;
+import com.quemistry.question_ms.model.RetrieveMCQResponse;
 import com.quemistry.question_ms.service.MCQService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,4 +73,21 @@ class QuestionControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(mcqDtoJson));
     }
+
+    @Test
+    public void testGetQuestions() throws Exception {
+        // Mock service response
+        RetrieveMCQResponse mockResponse = new RetrieveMCQResponse();
+        mockResponse.setMcqs(Collections.singletonList(new MCQDto())); // Mocking with empty MCQDto for simplicity
+
+        when(mcqService.retrieveMCQs()).thenReturn(mockResponse);
+
+        // Perform GET request and verify
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/questions")
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.mcqs").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.mcqs.length()").value(1)); // Adjust based on expected MCQ count
+    }
+
 }
