@@ -22,16 +22,12 @@
             "volumesFrom": [],
             "secrets": [
                 {
-                    "name": "AWS_ACCESS_KEY",
+                    "name": "AWS_ACCESS_KEY_ID",
                     "valueFrom": "arn:aws:ssm:ap-southeast-1:730335183958:parameter/cicd/prod/dynamodb/access-key"
                 },
                 {
-                    "name": "AWS_SECRET_KEY",
+                    "name": "AWS_SECRET_ACCESS_KEY",
                     "valueFrom": "arn:aws:ssm:ap-southeast-1:730335183958:parameter/cicd/prod/dynamodb/secret-key"
-                },
-                {
-                    "name": "AWS_REGION",
-                    "valueFrom": "arn:aws:ssm:ap-southeast-1:730335183958:parameter/cicd/prod/dynamodb/region"
                 }
             ],
             "logConfiguration": {
