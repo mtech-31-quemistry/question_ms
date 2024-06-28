@@ -16,13 +16,10 @@ public class DynamoDBConfig {
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
 
-        var clientConfiguration = new ClientConfigurationFactory();
-        clientConfiguration.getConfig().setProtocol(Protocol.HTTP);
-
         return AmazonDynamoDBClientBuilder
                 .standard()
                 .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
-                .withClientConfiguration(clientConfiguration.getConfig())
+                .withRegion("ap-southeast-1")
                 .build();
     }
 
