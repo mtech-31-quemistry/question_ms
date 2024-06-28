@@ -10,8 +10,12 @@ spring:
         writeCapacity: 1
 
 amazon:
-  dynamodb:
-    endpoint: ${DATABASE_URL}
+#  dynamodb:
+#    endpoint: https://dynamodb.ap-southeast-1.amazonaws.com
+  aws:
+    accesskey: ${AWS_ACCESS_KEY_ID}
+    secretkey: ${AWS_SECRET_ACCESS_KEY}
+    region: ap-southeast-1
 
 server:
   port: 80
@@ -27,3 +31,6 @@ management:
       path-mapping:
         health: /questions/actuator
 
+logging:
+  level:
+    javax.net.ssl: DEBUG
