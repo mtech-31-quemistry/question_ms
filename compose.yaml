@@ -22,7 +22,9 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - amazon.aws.accesskey=${AWS_ACCESS_KEY}
+      - amazon.aws.secretkey=${AWS_SECRET_KEY}
+      - amazon.aws.region=${AWS_REGION}
 
     ports:
       - "8080:8080"

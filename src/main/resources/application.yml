@@ -10,12 +10,10 @@ spring:
         writeCapacity: 1
 
 amazon:
-#  dynamodb:
-#    endpoint: https://dynamodb.ap-southeast-1.amazonaws.com
   aws:
-    accesskey: ${AWS_ACCESS_KEY_ID}
-    secretkey: ${AWS_SECRET_ACCESS_KEY}
-    region: ap-southeast-1
+    accesskey: ${AWS_ACCESS_KEY}
+    secretkey: ${AWS_SECRET_KEY}
+    region: ${AWS_REGION}
 
 server:
   port: 80
