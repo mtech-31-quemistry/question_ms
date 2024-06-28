@@ -1,5 +1,7 @@
 package com.quemistry.question_ms.config;
 
+import com.amazonaws.ClientConfigurationFactory;
+import com.amazonaws.Protocol;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -13,9 +15,15 @@ import org.springframework.context.annotation.Configuration;
 public class DynamoDBConfig {
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
-        return AmazonDynamoDBClientBuilder.standard()
-        .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
-        .build();
+
+        var clientConfiguration = new ClientConfigurationFactory();
+        clientConfiguration.getConfig().setProtocol(Protocol.HTTP);
+
+        return AmazonDynamoDBClientBuilder
+                .standard()
+                .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
+                .withClientConfiguration(clientConfiguration.getConfig())
+                .build();
     }
 
 //    @Bean
