@@ -11,9 +11,8 @@ spring:
 
 amazon:
   aws:
-    accesskey: ${AWS_ACCESS_KEY}
-    secretkey: ${AWS_SECRET_KEY}
-    region: ${AWS_REGION}
+    accesskey: ${AWS_ACCESS_KEY_ID}
+    secretkey: ${AWS_SECRET_ACCESS_KEY}
 
 server:
   port: 80

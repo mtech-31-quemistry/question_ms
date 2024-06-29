@@ -22,15 +22,12 @@ public class DynamoDBConfig {
 
     private final String amazonAWSSecretKey;
 
-    private final String amazonAWSRegion;
-
     public DynamoDBConfig(
             @Value("${amazon.aws.accesskey}") String amazonAWSAccessKey,
-            @Value("${amazon.aws.secretkey}") String amazonAWSSecretKey,
-            @Value("${amazon.aws.region}") String amazonAWSRegion) {
+            @Value("${amazon.aws.secretkey}") String amazonAWSSecretKey) {
+
         this.amazonAWSAccessKey = amazonAWSAccessKey;
         this.amazonAWSSecretKey = amazonAWSSecretKey;
-        this.amazonAWSRegion = amazonAWSRegion;
     }
 
     @Bean
