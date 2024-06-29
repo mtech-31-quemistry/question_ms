@@ -1,9 +1,6 @@
 package com.quemistry.question_ms.config;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.auth.*;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -32,16 +29,17 @@ public class DynamoDBConfig {
 
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
-        AmazonDynamoDB amazonDynamoDB
-                = new AmazonDynamoDBClient(amazonAWSCredentials());
-        amazonDynamoDB.setRegion(Region.getRegion(Regions.AP_SOUTHEAST_1));
 
-        return amazonDynamoDB;
+        return AmazonDynamoDBClientBuilder
+                .standard()
+                .withCredentials(amazonAWSCredentials())
+                .withRegion(Regions.AP_SOUTHEAST_1)
+                .build();
     }
 
     @Bean
-    public AWSCredentials amazonAWSCredentials() {
-        return new BasicAWSCredentials(
-                amazonAWSAccessKey, amazonAWSSecretKey);
+    public AWSStaticCredentialsProvider amazonAWSCredentials() {
+        return new AWSStaticCredentialsProvider(
+                new BasicAWSCredentials(this.amazonAWSAccessKey, this.amazonAWSSecretKey));
     }
 }
