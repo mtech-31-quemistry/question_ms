@@ -1,24 +1,13 @@
 package com.quemistry.question_ms.repository;
 
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.quemistry.question_ms.entity.MCQ;
-import com.quemistry.question_ms.entity.Topic;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Repository
 public class MCQCustomRepositoryImpl implements MCQCustomRepository{
 
-    @Autowired
-    private DynamoDBMapper dynamoDBMapper;
+//    @Autowired
+//    private DynamoDBMapper dynamoDBMapper;
 
 ////    @Override
 //    public List<MCQ> findMCQsByTopics(List<Topic> topics) {
