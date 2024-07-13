@@ -12,7 +12,7 @@ spring:
     console:
       enabled: true
 
-
+# flyway
   flyway:
     enabled: true
     baselineOnMigrate: true
