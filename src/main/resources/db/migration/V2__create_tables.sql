@@ -6,9 +6,7 @@
 -- DROP TABLE qms_question.mcq;
 
 CREATE TABLE qms_question.mcq (
-	closed_on timestamp(6) NULL,
-	created_on timestamp(6) NULL,
-	id int8 NOT NULL,
+	id SERIAL NOT NULL,
 	published_on timestamp(6) NULL,
 	closed_by varchar(255) NULL,
 	created_by varchar(255) NULL,
@@ -16,6 +14,8 @@ CREATE TABLE qms_question.mcq (
 	status varchar(255) NULL,
 	stem varchar(255) NULL,
     "options" varchar NULL,
+    closed_on timestamp(6) NULL,
+    created_on timestamp(6) NULL,
 	CONSTRAINT mcq_pkey PRIMARY KEY (id)
 );
 
@@ -27,8 +27,8 @@ CREATE TABLE qms_question.mcq (
 -- DROP TABLE qms_question.skill;
 
 CREATE TABLE qms_question.skill (
+	id SERIAL NOT NULL,
 	topic_id int4 NULL,
-	id int8 NOT NULL,
 	"name" varchar(255) NULL,
 	CONSTRAINT skill_pkey PRIMARY KEY (id)
 );
@@ -41,7 +41,7 @@ CREATE TABLE qms_question.skill (
 -- DROP TABLE qms_question.topic;
 
 CREATE TABLE qms_question.topic (
-	id int8 NOT NULL,
+	id SERIAL NOT NULL,
 	"name" varchar(255) NULL,
 	CONSTRAINT topic_pkey PRIMARY KEY (id)
 );
@@ -68,8 +68,8 @@ CREATE TABLE qms_question.topic (
 
 CREATE TABLE qms_question.mcq_skills (
 	mcq_id int8 NOT NULL,
-	skills_id int8 NOT NULL,
-	CONSTRAINT mcq_skills_fk_skill FOREIGN KEY (skills_id) REFERENCES qms_question.skill(id),
+	skill_id int8 NOT NULL,
+	CONSTRAINT mcq_skills_fk_skill FOREIGN KEY (skill_id) REFERENCES qms_question.skill(id),
 	CONSTRAINT mcq_skills_fk_mcq FOREIGN KEY (mcq_id) REFERENCES qms_question.mcq(id)
 );
 
@@ -82,7 +82,7 @@ CREATE TABLE qms_question.mcq_skills (
 
 CREATE TABLE qms_question.mcq_topics (
 	mcq_id int8 NOT NULL,
-	topics_id int8 NOT NULL,
+	topic_id int8 NOT NULL,
 	CONSTRAINT  mcq_topics_fk_mcq  FOREIGN KEY (mcq_id) REFERENCES qms_question.mcq(id),
-	CONSTRAINT  mcq_topics_fk_topic FOREIGN KEY (topics_id) REFERENCES qms_question.topic(id)
+	CONSTRAINT  mcq_topics_fk_topic FOREIGN KEY (topic_id) REFERENCES qms_question.topic(id)
 );

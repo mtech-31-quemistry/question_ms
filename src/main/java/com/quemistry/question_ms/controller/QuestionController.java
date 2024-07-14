@@ -50,9 +50,9 @@ public class QuestionController {
         return ResponseEntity.ok(mcqService.retrieveMCQs());
     }
 
-//    @PostMapping("retrieve")
-//    public ResponseEntity<RetrieveMCQResponse> retrieveQuestion(@RequestHeader HttpHeaders headers, @RequestBody RetrieveMCQRequest retrieveMCQRequest) {
-//        log.info("POST /v1/questions/retrieve");
-//        return ResponseEntity.ok(mcqService.retrieveMCQs(retrieveMCQRequest));
-//    }
+    @PostMapping("retrieve")
+    public ResponseEntity<RetrieveMCQResponse> retrieveQuestion(@RequestHeader HttpHeaders headers, @RequestBody RetrieveMCQRequest retrieveMCQRequest) {
+        log.info("POST /v1/questions/retrieve");
+        return ResponseEntity.ok(mcqService.retrieveMCQs(retrieveMCQRequest));
+    }
 }

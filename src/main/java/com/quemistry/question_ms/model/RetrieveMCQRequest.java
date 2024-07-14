@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 public class RetrieveMCQRequest {
 
-    private List<TopicDto> topics;
+    private List<Long> topics;
 
     private Integer pageNumber;
 

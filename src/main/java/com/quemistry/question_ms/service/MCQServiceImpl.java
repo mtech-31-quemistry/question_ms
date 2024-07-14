@@ -1,7 +1,6 @@
 package com.quemistry.question_ms.service;
 
 import com.quemistry.question_ms.entity.MCQ;
-import com.quemistry.question_ms.entity.Topic;
 import com.quemistry.question_ms.mapper.MCQMapper;
 import com.quemistry.question_ms.mapper.TopicMapper;
 import com.quemistry.question_ms.model.MCQDto;
@@ -11,9 +10,6 @@ import com.quemistry.question_ms.repository.MCQCustomRepository;
 import com.quemistry.question_ms.repository.MCQPageRepository;
 import com.quemistry.question_ms.repository.MCQRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,26 +48,26 @@ public class MCQServiceImpl implements MCQService {
                 .build();
     }
 
-//    @Override
-//    public RetrieveMCQResponse retrieveMCQs(RetrieveMCQRequest retrieveMCQRequest) {
-//        List<MCQ> results;
-//        RetrieveMCQResponse retrieveMCQResponse = new RetrieveMCQResponse();
-//
+    @Override
+    public RetrieveMCQResponse retrieveMCQs(RetrieveMCQRequest retrieveMCQRequest) {
+        List<MCQ> results;
+        RetrieveMCQResponse retrieveMCQResponse = new RetrieveMCQResponse();
+
 //        List<Topic> topics = topicMapper.topicDtosToTopics(retrieveMCQRequest.getTopics());
 //        log.info("topics=== {}", topics);
-//        List<MCQ> mcqs  = mcqCustomRepository.findMCQsByTopics(topics);
-//        retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
-////        if (retrieveMCQRequest.getPageNumber() != null && retrieveMCQRequest.getPageSize()!= null){
-////            Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize());
-////            Page<MCQ> mcqPage = mcqPageRepository.findByTopicsIn(topics, pageable);
-////            retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqPage.getContent()));
-////            retrieveMCQResponse.setPageSize(retrieveMCQRequest.getPageSize());
-////            retrieveMCQResponse.setPageNumber(retrieveMCQRequest.getPageNumber());
-////
-////        } else {
-////            List<MCQ> mcqs  = mcqRepository.findByTopicsIn(topics);
-////            retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
-////        }
-//        return retrieveMCQResponse;
-//    }
+        List<MCQ> mcqs  = mcqRepository.findByTopicIds(retrieveMCQRequest.getTopics());
+        retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
+//        if (retrieveMCQRequest.getPageNumber() != null && retrieveMCQRequest.getPageSize()!= null){
+//            Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize());
+//            Page<MCQ> mcqPage = mcqPageRepository.findByTopicsIn(topics, pageable);
+//            retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqPage.getContent()));
+//            retrieveMCQResponse.setPageSize(retrieveMCQRequest.getPageSize());
+//            retrieveMCQResponse.setPageNumber(retrieveMCQRequest.getPageNumber());
+//
+//        } else {
+//            List<MCQ> mcqs  = mcqRepository.findByTopicsIn(topics);
+//            retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
+//        }
+        return retrieveMCQResponse;
+    }
 }

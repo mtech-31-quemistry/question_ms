@@ -8,7 +8,7 @@ public interface MCQService {
 
     MCQDto saveQuestion(MCQDto MCQDto);
 
-//    RetrieveMCQResponse retrieveMCQs(RetrieveMCQRequest retrieveMCQRequest);
+    RetrieveMCQResponse retrieveMCQs(RetrieveMCQRequest retrieveMCQRequest);
 
     RetrieveMCQResponse retrieveMCQs();
 }

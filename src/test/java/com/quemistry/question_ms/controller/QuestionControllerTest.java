@@ -1,13 +1,8 @@
 package com.quemistry.question_ms.controller;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quemistry.question_ms.model.MCQDto;
+import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
 import com.quemistry.question_ms.service.MCQService;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +21,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 class QuestionControllerTest {
 
 
@@ -36,6 +38,8 @@ class QuestionControllerTest {
 
     @InjectMocks
     private QuestionController questionController;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
@@ -75,7 +79,7 @@ class QuestionControllerTest {
     }
 
     @Test
-    public void testGetQuestions() throws Exception {
+    void testGetQuestions() throws Exception {
         // Mock service response
         RetrieveMCQResponse mockResponse = new RetrieveMCQResponse();
         mockResponse.setMcqs(Collections.singletonList(new MCQDto())); // Mocking with empty MCQDto for simplicity
@@ -88,6 +92,26 @@ class QuestionControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.mcqs").isArray())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.mcqs.length()").value(1)); // Adjust based on expected MCQ count
+    }
+
+    @Test
+    void testRetrieveQuestion() throws Exception {
+        // Mock request object
+        RetrieveMCQRequest request = new RetrieveMCQRequest();
+        // Assuming RetrieveMCQRequest has some fields to set for testing
+
+        // Mock service response
+        RetrieveMCQResponse mockResponse = new RetrieveMCQResponse();
+        when(mcqService.retrieveMCQs(any(RetrieveMCQRequest.class))).thenReturn(mockResponse);
+
+        // Convert request object to JSON
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        // Perform POST request and verify response
+        mockMvc.perform(post("/v1/questions/retrieve")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk());
     }
 
 }

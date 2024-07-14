@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +24,7 @@ import java.util.List;
 public class MCQ {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 
@@ -34,9 +36,19 @@ public class MCQ {
 
 
     @ManyToMany
+    @JoinTable(
+            name = "mcq_topics",
+            joinColumns = @JoinColumn(name = "mcq_id"),
+            inverseJoinColumns = @JoinColumn(name = "topic_id")
+    )
     private List<Topic> topics;
 
     @ManyToMany
+    @JoinTable(
+            name = "mcq_skills", // Ensure this is the correct join table name
+            joinColumns = @JoinColumn(name = "mcq_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id")
+    )
     private List<Skill> skills;
 
     private String status;
