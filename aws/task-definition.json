@@ -22,14 +22,6 @@
             "volumesFrom": [],
             "secrets": [
                 {
-                    "name": "AWS_ACCESS_KEY_ID",
-                    "valueFrom": "arn:aws:ssm:ap-southeast-1:730335183958:parameter/cicd/prod/dynamodb/access-key"
-                },
-                {
-                    "name": "AWS_SECRET_ACCESS_KEY",
-                    "valueFrom": "arn:aws:ssm:ap-southeast-1:730335183958:parameter/cicd/prod/dynamodb/secret-key"
-                },
-                {
                     "name": "DB_URL",
                     "valueFrom": "arn:aws:ssm:ap-southeast-1:730335183958:parameter/cicd/prod/postgre/database/url"
                 },
