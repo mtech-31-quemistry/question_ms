@@ -14,7 +14,6 @@ import com.quemistry.question_ms.mapper.MCQMapper;
 import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
-import com.quemistry.question_ms.repository.MCQCustomRepository;
 import com.quemistry.question_ms.repository.MCQPageRepository;
 import com.quemistry.question_ms.repository.MCQRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,8 +34,6 @@ class MCQServiceImplTest {
     @Mock
     private MCQPageRepository mcqPageRepository;
 
-    @Mock
-    private MCQCustomRepository mcqCustomRepository;
     @InjectMocks
     private MCQServiceImpl mcqService;
 
@@ -45,7 +42,7 @@ class MCQServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        mcqService = new MCQServiceImpl(mcqRepository, mcqPageRepository, mcqCustomRepository);
+        mcqService = new MCQServiceImpl(mcqRepository, mcqPageRepository);
     }
 
     @Test
@@ -101,9 +98,6 @@ class MCQServiceImplTest {
         // Mock repositories and mappers
         List<MCQ> mockMCQs = new ArrayList<>(); // Example mock MCQs
         when(mcqRepository.findByTopicIds(anyList())).thenReturn(mockMCQs);
-
-        // Mock mapper behavior
-        when(mcqMapper.mcqsToMcqDtos(mockMCQs)).thenReturn(new ArrayList<>()); // Mock empty list of MCQ DTOs
 
         // Call the service method
         RetrieveMCQResponse response = mcqService.retrieveMCQs(request);

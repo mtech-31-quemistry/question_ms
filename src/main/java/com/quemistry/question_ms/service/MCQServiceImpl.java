@@ -6,7 +6,6 @@ import com.quemistry.question_ms.mapper.TopicMapper;
 import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
-import com.quemistry.question_ms.repository.MCQCustomRepository;
 import com.quemistry.question_ms.repository.MCQPageRepository;
 import com.quemistry.question_ms.repository.MCQRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -23,15 +22,13 @@ public class MCQServiceImpl implements MCQService {
     private final MCQRepository mcqRepository;
     private final MCQPageRepository mcqPageRepository;
 
-    private final MCQCustomRepository mcqCustomRepository;
 
     private final MCQMapper mcqMapper = MCQMapper.INSTANCE;
     private final TopicMapper topicMapper = TopicMapper.INSTANCE;
 
-    public MCQServiceImpl(MCQRepository mcqRepository, MCQPageRepository mcqPageRepository, MCQCustomRepository mcqCustomRepository) {
+    public MCQServiceImpl(MCQRepository mcqRepository, MCQPageRepository mcqPageRepository) {
         this.mcqRepository = mcqRepository;
         this.mcqPageRepository = mcqPageRepository;
-        this.mcqCustomRepository = mcqCustomRepository;
     }
 
     @Override

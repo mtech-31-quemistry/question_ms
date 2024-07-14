@@ -16,7 +16,6 @@ class MCQRepositoryTest {
     @Autowired
     private MCQRepository mcqRepository;
 
-
     @Test
     void testFindByTopicIds() {
         List<Long> topicIds = Arrays.asList(1L, 2L);
