@@ -10,6 +10,5 @@ public interface MCQService {
 
     RetrieveMCQResponse retrieveMCQs(RetrieveMCQRequest retrieveMCQRequest);
 
-
     RetrieveMCQResponse retrieveMCQs();
 }
