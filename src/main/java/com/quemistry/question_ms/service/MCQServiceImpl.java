@@ -54,8 +54,6 @@ public class MCQServiceImpl implements MCQService {
         RetrieveMCQResponse retrieveMCQResponse = new RetrieveMCQResponse();
 
         List< com.quemistry.question_ms.entity.Topic> topics = topicMapper.topicDtosToTopics(retrieveMCQRequest.getTopics());
-        List<MCQ> mcqs  = mcqRepository.findByTopicsIn(topics);
-        retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
         if (retrieveMCQRequest.getPageNumber() != null && retrieveMCQRequest.getPageSize()!= null){
             Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize());
             Page<MCQ> mcqPage = mcqPageRepository.findByTopicsIn(topics, pageable);

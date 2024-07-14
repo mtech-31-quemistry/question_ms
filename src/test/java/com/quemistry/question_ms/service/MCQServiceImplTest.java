@@ -98,6 +98,6 @@ class MCQServiceImplTest {
 
         verify(mcqRepository, times(1)).findByTopicsIn(any());
 
-        assertEquals(2, response.getMcqs().size()); // Assuming two MCQs were returned
+        assertEquals(2, response.getMcqs().size());
     }
 }

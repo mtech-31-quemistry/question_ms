@@ -103,7 +103,7 @@ class QuestionControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String requestJson = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(post("/v1/questions/quiz")
+        mockMvc.perform(get("/v1/questions/quiz")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isOk())
