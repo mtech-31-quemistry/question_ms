@@ -1,15 +1,16 @@
 package com.quemistry.question_ms.repository;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class MCQCustomRepositoryImpl implements MCQCustomRepository{
-
+//@Repository
+//public class MCQCustomRepositoryImpl implements MCQCustomRepository{
+//
 //    @Autowired
 //    private DynamoDBMapper dynamoDBMapper;
-
-////    @Override
+//
+//    @Override
 //    public List<MCQ> findMCQsByTopics(List<Topic> topics) {
 //        List<String> topicNames = topics.stream().map(Topic::getName).collect(Collectors.toList());
 //
@@ -23,11 +24,11 @@ public class MCQCustomRepositoryImpl implements MCQCustomRepository{
 //                .withExpressionAttributeValues(eav)
 //                .withFilterExpression("topics IN :val1");
 //
-////        DynamoDBQueryExpression<MCQ> queryExpression = new DynamoDBQueryExpression<MCQ>()
-////                .withIndexName("topics-index")
-////                .withKeyConditionExpression("topics IN :val1")
-////                .withExpressionAttributeValues(eav);
+//        DynamoDBQueryExpression<MCQ> queryExpression = new DynamoDBQueryExpression<MCQ>()
+//                .withIndexName("topics-index")
+//                .withKeyConditionExpression("topics IN :val1")
+//                .withExpressionAttributeValues(eav);
 //
 //        return dynamoDBMapper.query(MCQ.class, queryExpression);
 //    }
-}
+//}

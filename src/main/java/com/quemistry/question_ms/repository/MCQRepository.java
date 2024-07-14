@@ -10,5 +10,4 @@ import java.util.List;
 public interface MCQRepository extends JpaRepository<MCQ, String> {
 
     List<MCQ> findByTopicsIn(List<Topic> topics);
-
 }

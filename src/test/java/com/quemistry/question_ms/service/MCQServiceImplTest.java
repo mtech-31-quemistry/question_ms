@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import com.quemistry.question_ms.entity.MCQ;
 import com.quemistry.question_ms.mapper.MCQMapper;
 import com.quemistry.question_ms.model.MCQDto;
+import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
 import com.quemistry.question_ms.repository.MCQCustomRepository;
 import com.quemistry.question_ms.repository.MCQPageRepository;
@@ -30,8 +31,6 @@ class MCQServiceImplTest {
     @Mock
     private MCQPageRepository mcqPageRepository;
 
-    @Mock
-    private MCQCustomRepository mcqCustomRepository;
     @InjectMocks
     private MCQServiceImpl mcqService;
 
@@ -40,7 +39,7 @@ class MCQServiceImplTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        mcqService = new MCQServiceImpl(mcqRepository, mcqPageRepository, mcqCustomRepository);
+        mcqService = new MCQServiceImpl(mcqRepository, mcqPageRepository);
     }
 
     @Test
@@ -83,6 +82,22 @@ class MCQServiceImplTest {
         verify(mcqRepository, times(1)).findAll();
 
         // Assertions
+        assertEquals(2, response.getMcqs().size()); // Assuming two MCQs were returned
+    }
+
+    // add test for retrieveMCQs function
+    @Test
+    public void testRetrieveMCQsByRequest() {
+        MCQ mcq1 = new MCQ();
+        MCQ mcq2 = new MCQ();
+        List<MCQ> mockMCQList = Arrays.asList(mcq1, mcq2);
+
+        when(mcqRepository.findByTopicsIn(any())).thenReturn(mockMCQList);
+
+        RetrieveMCQResponse response = mcqService.retrieveMCQs(new RetrieveMCQRequest());
+
+        verify(mcqRepository, times(1)).findByTopicsIn(any());
+
         assertEquals(2, response.getMcqs().size()); // Assuming two MCQs were returned
     }
 }

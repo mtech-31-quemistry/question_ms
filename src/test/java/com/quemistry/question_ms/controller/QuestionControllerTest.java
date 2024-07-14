@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quemistry.question_ms.model.MCQDto;
+import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
 import com.quemistry.question_ms.service.MCQService;
 import org.junit.jupiter.api.BeforeEach;
@@ -90,4 +91,22 @@ class QuestionControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.mcqs.length()").value(1)); // Adjust based on expected MCQ count
     }
 
+    @Test
+    public void testGetQuizQuestions() throws Exception {
+        RetrieveMCQRequest request = new RetrieveMCQRequest();
+
+        RetrieveMCQResponse expectedResponse = new RetrieveMCQResponse();
+        expectedResponse.setMcqs(Collections.singletonList(new MCQDto()));
+
+        when(mcqService.retrieveMCQs(request)).thenReturn(expectedResponse);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestJson = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(post("/v1/questions/quiz")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
+    }
 }

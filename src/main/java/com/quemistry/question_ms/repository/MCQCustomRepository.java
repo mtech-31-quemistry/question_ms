@@ -1,8 +1,11 @@
 package com.quemistry.question_ms.repository;
 
 
-public interface MCQCustomRepository {
+import com.quemistry.question_ms.entity.MCQ;
+import com.quemistry.question_ms.entity.Topic;
 
-//    @Override
+import java.util.List;
+
+public interface MCQCustomRepository {
 //    List<MCQ> findMCQsByTopics(List<Topic> topics);
 }

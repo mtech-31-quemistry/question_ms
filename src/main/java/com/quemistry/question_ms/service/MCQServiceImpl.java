@@ -1,7 +1,6 @@
 package com.quemistry.question_ms.service;
 
 import com.quemistry.question_ms.entity.MCQ;
-import com.quemistry.question_ms.entity.Topic;
 import com.quemistry.question_ms.mapper.MCQMapper;
 import com.quemistry.question_ms.mapper.TopicMapper;
 import com.quemistry.question_ms.model.MCQDto;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -27,15 +27,13 @@ public class MCQServiceImpl implements MCQService {
     private final MCQRepository mcqRepository;
     private final MCQPageRepository mcqPageRepository;
 
-    private final MCQCustomRepository mcqCustomRepository;
 
     private final MCQMapper mcqMapper = MCQMapper.INSTANCE;
     private final TopicMapper topicMapper = TopicMapper.INSTANCE;
 
-    public MCQServiceImpl(MCQRepository mcqRepository, MCQPageRepository mcqPageRepository, MCQCustomRepository mcqCustomRepository) {
+    public MCQServiceImpl(MCQRepository mcqRepository, MCQPageRepository mcqPageRepository ) {
         this.mcqRepository = mcqRepository;
         this.mcqPageRepository = mcqPageRepository;
-        this.mcqCustomRepository = mcqCustomRepository;
     }
 
     @Override
@@ -45,33 +43,29 @@ public class MCQServiceImpl implements MCQService {
 
     @Override
     public RetrieveMCQResponse retrieveMCQs() {
-        List<MCQ> mcqs = StreamSupport.stream(mcqRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());;
+        List<MCQ> mcqs = new ArrayList<>(mcqRepository.findAll());
         return RetrieveMCQResponse.builder()
                 .mcqs(mcqMapper.mcqsToMcqDtos(mcqs))
                 .build();
     }
 
-//    @Override
-//    public RetrieveMCQResponse retrieveMCQs(RetrieveMCQRequest retrieveMCQRequest) {
-//        List<MCQ> results;
-//        RetrieveMCQResponse retrieveMCQResponse = new RetrieveMCQResponse();
-//
-//        List<Topic> topics = topicMapper.topicDtosToTopics(retrieveMCQRequest.getTopics());
-//        log.info("topics=== {}", topics);
-//        List<MCQ> mcqs  = mcqCustomRepository.findMCQsByTopics(topics);
-//        retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
-////        if (retrieveMCQRequest.getPageNumber() != null && retrieveMCQRequest.getPageSize()!= null){
-////            Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize());
-////            Page<MCQ> mcqPage = mcqPageRepository.findByTopicsIn(topics, pageable);
-////            retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqPage.getContent()));
-////            retrieveMCQResponse.setPageSize(retrieveMCQRequest.getPageSize());
-////            retrieveMCQResponse.setPageNumber(retrieveMCQRequest.getPageNumber());
-////
-////        } else {
-////            List<MCQ> mcqs  = mcqRepository.findByTopicsIn(topics);
-////            retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
-////        }
-//        return retrieveMCQResponse;
-//    }
+    @Override
+    public RetrieveMCQResponse retrieveMCQs(RetrieveMCQRequest retrieveMCQRequest) {
+        RetrieveMCQResponse retrieveMCQResponse = new RetrieveMCQResponse();
+
+        List< com.quemistry.question_ms.entity.Topic> topics = topicMapper.topicDtosToTopics(retrieveMCQRequest.getTopics());
+        List<MCQ> mcqs  = mcqRepository.findByTopicsIn(topics);
+        retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
+        if (retrieveMCQRequest.getPageNumber() != null && retrieveMCQRequest.getPageSize()!= null){
+            Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize());
+            Page<MCQ> mcqPage = mcqPageRepository.findByTopicsIn(topics, pageable);
+            retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqPage.getContent()));
+            retrieveMCQResponse.setPageSize(retrieveMCQRequest.getPageSize());
+            retrieveMCQResponse.setPageNumber(retrieveMCQRequest.getPageNumber());
+
+        } else {
+            retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqRepository.findByTopicsIn(topics)));
+        }
+        return retrieveMCQResponse;
+    }
 }
