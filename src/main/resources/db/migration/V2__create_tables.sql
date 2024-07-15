@@ -1,3 +1,8 @@
+CREATE SEQUENCE IF NOT EXISTS mcq_seq;
+
+CREATE SEQUENCE IF NOT EXISTS skill_seq;
+
+CREATE SEQUENCE IF NOT EXISTS topic_seq;
 
 -- qms_question.mcq definition
 
