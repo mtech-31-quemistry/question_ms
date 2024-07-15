@@ -97,7 +97,7 @@ class MCQServiceImplTest {
 
         // Mock repositories and mappers
         List<MCQ> mockMCQs = new ArrayList<>(); // Example mock MCQs
-        when(mcqRepository.findByTopicIds(anyList())).thenReturn(mockMCQs);
+        when(mcqRepository.findByTopicOrSkill(anyList(),anyList())).thenReturn(mockMCQs);
 
         // Call the service method
         RetrieveMCQResponse response = mcqService.retrieveMCQs(request);

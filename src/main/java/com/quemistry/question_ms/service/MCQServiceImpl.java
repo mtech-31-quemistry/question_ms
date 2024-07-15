@@ -22,9 +22,7 @@ public class MCQServiceImpl implements MCQService {
     private final MCQRepository mcqRepository;
     private final MCQPageRepository mcqPageRepository;
 
-
-    private final MCQMapper mcqMapper = MCQMapper.INSTANCE;
-    private final TopicMapper topicMapper = TopicMapper.INSTANCE;
+    private static final MCQMapper mcqMapper = MCQMapper.INSTANCE;
 
     public MCQServiceImpl(MCQRepository mcqRepository, MCQPageRepository mcqPageRepository) {
         this.mcqRepository = mcqRepository;
@@ -38,8 +36,7 @@ public class MCQServiceImpl implements MCQService {
 
     @Override
     public RetrieveMCQResponse retrieveMCQs() {
-        List<MCQ> mcqs = StreamSupport.stream(mcqRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());;
+        List<MCQ> mcqs = mcqRepository.findAll();
         return RetrieveMCQResponse.builder()
                 .mcqs(mcqMapper.mcqsToMcqDtos(mcqs))
                 .build();
@@ -52,7 +49,7 @@ public class MCQServiceImpl implements MCQService {
 
 //        List<Topic> topics = topicMapper.topicDtosToTopics(retrieveMCQRequest.getTopics());
 //        log.info("topics=== {}", topics);
-        List<MCQ> mcqs  = mcqRepository.findByTopicIds(retrieveMCQRequest.getTopics());
+        List<MCQ> mcqs  = mcqRepository.findByTopicOrSkill(retrieveMCQRequest.getTopics(), retrieveMCQRequest.getSkills());
         retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
 //        if (retrieveMCQRequest.getPageNumber() != null && retrieveMCQRequest.getPageSize()!= null){
 //            Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize());

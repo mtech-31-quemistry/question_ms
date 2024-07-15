@@ -14,6 +14,7 @@ import java.util.List;
 public class RetrieveMCQRequest {
 
     private List<Long> topics;
+    private List<Long> skills;
 
     private Integer pageNumber;
 

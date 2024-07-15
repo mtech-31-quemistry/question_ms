@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface MCQRepository extends JpaRepository<MCQ, String> {
 
-    @Query("SELECT q FROM MCQ q JOIN q.topics t WHERE t.id IN :topicIds")
-    List<MCQ> findByTopicIds(@Param("topicIds") List<Long> topicIds);
+    @Query("SELECT q FROM MCQ q JOIN q.topics t JOIN q.skills s WHERE t.id IN :topicIds OR s.id IN :skillIds")
+    List<MCQ> findByTopicOrSkill(@Param("topicIds") List<Long> topicIds, @Param("skillIds") List<Long> skillIds);
 
 }

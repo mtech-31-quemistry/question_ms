@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @SpringBootTest
@@ -20,7 +21,7 @@ class MCQRepositoryTest {
     void testFindByTopicIds() {
         List<Long> topicIds = Arrays.asList(1L, 2L);
         // Call the repository method
-        List<MCQ> result = mcqRepository.findByTopicIds(topicIds);
+        List<MCQ> result = mcqRepository.findByTopicOrSkill(topicIds, Collections.emptyList());
 
         Assertions.assertThat(result).isEmpty();
     }
