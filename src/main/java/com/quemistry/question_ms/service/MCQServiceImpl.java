@@ -2,7 +2,6 @@ package com.quemistry.question_ms.service;
 
 import com.quemistry.question_ms.entity.MCQ;
 import com.quemistry.question_ms.mapper.MCQMapper;
-import com.quemistry.question_ms.mapper.TopicMapper;
 import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
@@ -12,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service
@@ -49,6 +46,9 @@ public class MCQServiceImpl implements MCQService {
 
 //        List<Topic> topics = topicMapper.topicDtosToTopics(retrieveMCQRequest.getTopics());
 //        log.info("topics=== {}", topics);
+        if(retrieveMCQRequest.getTopics() == null && retrieveMCQRequest.getSkills() == null){
+            return retrieveMCQs();
+        }
         List<MCQ> mcqs  = mcqRepository.findByTopicOrSkill(retrieveMCQRequest.getTopics(), retrieveMCQRequest.getSkills());
         retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
 //        if (retrieveMCQRequest.getPageNumber() != null && retrieveMCQRequest.getPageSize()!= null){
