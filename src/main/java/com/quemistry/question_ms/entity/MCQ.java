@@ -1,5 +1,6 @@
 package com.quemistry.question_ms.entity;
 
+import com.quemistry.question_ms.model.QuestionOption;
 import com.quemistry.question_ms.util.OptionConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -10,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -32,7 +32,7 @@ public class MCQ {
 
     @Convert(converter = OptionConverter.class)
 //    @ElementCollection
-    private List<Option> options;
+    private List<QuestionOption> options;
 
 
     @ManyToMany
@@ -64,20 +64,5 @@ public class MCQ {
     private Date createdOn;
 
     private String createdBy;
-
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class Option {
-        private Integer no;
-
-        private String text;
-
-        private String explanation;
-
-        private Boolean isAnswer;
-    }
 
 }

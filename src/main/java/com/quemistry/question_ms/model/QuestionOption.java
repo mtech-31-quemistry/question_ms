@@ -1,6 +1,5 @@
 package com.quemistry.question_ms.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SkillDto {
+public class QuestionOption {
+    private Integer no;
 
-    private Long id;
-    private String name;
-    private Long topicId;
+    private String text;
+
+    private String explanation;
+
+    private Boolean isAnswer;
 }

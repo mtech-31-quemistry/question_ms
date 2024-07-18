@@ -17,7 +17,6 @@ public class RetrieveMCQRequest {
     private List<Long> skills;
 
     private Integer pageNumber;
-
     private Integer pageSize;
 
 }

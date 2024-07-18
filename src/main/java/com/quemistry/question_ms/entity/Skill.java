@@ -20,6 +20,6 @@ public class Skill {
 
     private String name;
 
-    private Integer topicId;
+    private Long topicId;
 
 }

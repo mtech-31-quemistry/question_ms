@@ -19,4 +19,8 @@ public class RetrieveMCQResponse {
 
     private Integer pageSize;
 
+    private Integer totalPages;
+
+    private Long totalRecords;
+
 }
