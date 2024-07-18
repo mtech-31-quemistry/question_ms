@@ -1,13 +1,14 @@
 services:
   db:
-    image: amazon/dynamodb-local:latest
-    container_name: question-ms-db
-    command: -jar DynamoDBLocal.jar -sharedDb -dbPath ./data
+    image: 'postgres:16.0-alpine'
+    environment:
+      POSTGRES_USER: ${DB_URL}
+      POSTGRES_PASSWORD: ${DB_USER}
+      POSTGRES_DB: ${DB_PASSWORD}
     ports:
-      - "8000:8000"
+      - '5432:5432'
     volumes:
-      - dynamodb_data:/home/dynamodblocal/data
-    working_dir: /home/dynamodblocal
+      - db-data:/var/lib/postgresql/data
 
   app:
     build:
@@ -22,11 +23,9 @@ services:
     depends_on:
       - db
     environment:
-      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
-      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
 
     ports:
       - "80:80"
 
 volumes:
-  dynamodb_data:
+  db_data:
