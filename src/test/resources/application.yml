@@ -33,11 +33,6 @@ spring:
 #        format_sql: true
 #    show-sql: true
 
-amazon:
-  aws:
-    accesskey: ${AWS_ACCESS_KEY_ID}
-    secretkey: ${AWS_SECRET_ACCESS_KEY}
-
 server:
   port: 80
 
