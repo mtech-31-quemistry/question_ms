@@ -43,8 +43,8 @@ public class MaskUtil {
 
             return objectMapper.writeValueAsString(rootNode);
         } catch (Exception e) {
-            e.printStackTrace();
-            log.info("Error masking value: {}", jsonInput);
+//            e.printStackTrace();
+            log.info("Error masking value: {}, exception {}", jsonInput, e.getMessage());
             return jsonInput; // Return original JSON input if masking fails
         }
     }
