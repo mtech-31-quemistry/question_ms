@@ -3,6 +3,7 @@ package com.quemistry.question_ms.service;
 import com.quemistry.question_ms.entity.MCQ;
 import com.quemistry.question_ms.mapper.MCQMapper;
 import com.quemistry.question_ms.model.MCQDto;
+import com.quemistry.question_ms.model.RetrieveMCQByIdsRequest;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
 import com.quemistry.question_ms.repository.MCQRepository;
@@ -81,6 +82,20 @@ public class MCQServiceImpl implements MCQService {
             }
             retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
         }
+        return retrieveMCQResponse;
+    }
+
+    @Override
+    public RetrieveMCQResponse retrieveByIds(RetrieveMCQByIdsRequest retrieveMCQByIdsRequest) {
+        Pageable pageable = PageRequest.of(retrieveMCQByIdsRequest.getPageNumber(), retrieveMCQByIdsRequest.getPageSize());
+        Page<MCQ> mcqPage  = mcqRepository.findByIds(retrieveMCQByIdsRequest.getIds(), pageable);
+
+        RetrieveMCQResponse retrieveMCQResponse = new RetrieveMCQResponse();
+        retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqPage.getContent()));
+        retrieveMCQResponse.setPageSize(retrieveMCQByIdsRequest.getPageSize());
+        retrieveMCQResponse.setPageNumber(retrieveMCQByIdsRequest.getPageNumber());
+        retrieveMCQResponse.setTotalPages(mcqPage.getTotalPages());
+        retrieveMCQResponse.setTotalRecords(mcqPage.getTotalElements());
         return retrieveMCQResponse;
     }
 }

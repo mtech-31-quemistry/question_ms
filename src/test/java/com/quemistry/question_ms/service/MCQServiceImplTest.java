@@ -13,6 +13,7 @@ import com.quemistry.question_ms.entity.MCQ;
 import com.quemistry.question_ms.mapper.MCQMapper;
 import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.QuestionOption;
+import com.quemistry.question_ms.model.RetrieveMCQByIdsRequest;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
 import com.quemistry.question_ms.repository.MCQRepository;
@@ -34,12 +35,13 @@ class MCQServiceImplTest {
 
     @Mock
     private MCQRepository mcqRepository;
-
-    @InjectMocks
-    private MCQServiceImpl mcqService;
-
     @Mock
     private MCQMapper mcqMapper;
+    @InjectMocks
+    private MCQServiceImpl mcqService;
+    private List<MCQ> mcqs;
+    private Page<MCQ> mcqPage;
+    private List<MCQDto> mcqDTOs;
 
     @BeforeEach
     void setUp() {
@@ -201,6 +203,34 @@ class MCQServiceImplTest {
         assertEquals(2, response.getPageSize());
         assertEquals(1, response.getTotalPages());
         assertEquals(2, response.getTotalRecords());
+    }
+
+
+    @Test
+    void testRetrieveByIds() {
+        RetrieveMCQByIdsRequest request = new RetrieveMCQByIdsRequest();
+        request.setIds(Arrays.asList(1L, 2L, 3L));
+        request.setPageNumber(0);
+        request.setPageSize(10);
+
+        List<MCQ> mcqs;
+        Page<MCQ> mcqPage;
+        List<MCQDto> mcqDTOs;
+        //
+        mcqs = Arrays.asList(new MCQ(), new MCQ(), new MCQ());
+        mcqPage = new PageImpl<>(mcqs, PageRequest.of(0, 10), mcqs.size());
+        mcqDTOs = Arrays.asList(new MCQDto(), new MCQDto(), new MCQDto());
+
+        when(mcqRepository.findByIds(request.getIds(), PageRequest.of(request.getPageNumber(), request.getPageSize()))).thenReturn(mcqPage);
+        when(mcqMapper.mcqsToMcqDtos(mcqs)).thenReturn(mcqDTOs);
+
+        RetrieveMCQResponse response =  mcqService.retrieveByIds(request);
+
+        assertEquals(mcqDTOs, response.getMcqs());
+        assertEquals(10, response.getPageSize());
+        assertEquals(0, response.getPageNumber());
+        assertEquals(1, response.getTotalPages());
+        assertEquals(3, response.getTotalRecords());
     }
 
 }

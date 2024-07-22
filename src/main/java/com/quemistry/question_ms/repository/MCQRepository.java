@@ -18,4 +18,6 @@ public interface MCQRepository extends JpaRepository<MCQ, Long> {
     @Query("SELECT q FROM MCQ q JOIN q.topics t JOIN q.skills s WHERE t.id IN :topicIds OR s.id IN :skillIds")
     Page<MCQ> findByTopicOrSkill(@Param("topicIds") List<Long> topicIds, @Param("skillIds") List<Long> skillIds, Pageable pageable);
 
+    @Query("SELECT q FROM MCQ q WHERE q.id IN :ids")
+    Page<MCQ> findByIds( List<Long> ids, Pageable pageable);
 }

@@ -1,6 +1,7 @@
 package com.quemistry.question_ms.controller;
 
 import com.quemistry.question_ms.model.MCQDto;
+import com.quemistry.question_ms.model.RetrieveMCQByIdsRequest;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
 import com.quemistry.question_ms.service.MCQService;
@@ -54,5 +55,10 @@ public class QuestionController {
     public ResponseEntity<RetrieveMCQResponse> retrieveQuestion(@RequestHeader HttpHeaders headers, @RequestBody RetrieveMCQRequest retrieveMCQRequest) {
         log.info("POST /v1/questions/retrieve");
         return ResponseEntity.ok(mcqService.retrieveMCQs(retrieveMCQRequest));
+    }
+
+    @PostMapping("retrieve-by-ids")
+    public ResponseEntity<RetrieveMCQResponse> retrieveQuestionById(@RequestHeader HttpHeaders headers, @RequestBody RetrieveMCQByIdsRequest retrieveMCQByIdsRequest) {
+        return ResponseEntity.ok(mcqService.retrieveByIds(retrieveMCQByIdsRequest));
     }
 }
