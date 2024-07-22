@@ -14,7 +14,7 @@ import java.util.List;
 public class RetrieveMCQByIdsRequest {
 
     private List<Long> ids;
-    private Integer pageNumber;
-    private Integer pageSize;
+    private Integer pageNumber = 0; // default
+    private Integer pageSize = 60;  // default
 
 }
