@@ -22,23 +22,6 @@ CREATE TABLE qms_question.mcq (
 --CREATE SEQUENCE qms_question.mcq_id_seq START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;
 
 
--- qms_question.skill definition
-
--- Drop table
-
--- DROP TABLE IF EXISTS qms_question.skill;
-
-CREATE TABLE qms_question.skill (
-	id SERIAL NOT NULL,
-	topic_id int4 NULL,
-	"name" varchar(255) NULL,
-	CONSTRAINT skill_pkey PRIMARY KEY (id)
-);
-
--- Create sequence for skill.id
---CREATE SEQUENCE qms_question.skill_id_seq START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;
-
-
 -- qms_question.topic definition
 
 -- Drop table
@@ -53,6 +36,25 @@ CREATE TABLE qms_question.topic (
 
 -- Create sequence for topic.id
 --CREATE SEQUENCE qms_question.topic_id_seq START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;
+
+
+-- qms_question.skill definition
+
+-- Drop table
+
+-- DROP TABLE IF EXISTS qms_question.skill;
+
+CREATE TABLE qms_question.skill (
+	id SERIAL NOT NULL,
+	topic_id int4 NULL,
+	"name" varchar(255) NULL,
+	CONSTRAINT skill_pkey PRIMARY KEY (id),
+	CONSTRAINT fk_topic FOREIGN KEY (topic_id) REFERENCES qms_question.topic (id)
+);
+
+-- Create sequence for skill.id
+--CREATE SEQUENCE qms_question.skill_id_seq START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;
+
 
 -- qms_question.mcq_skills definition
 

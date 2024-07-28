@@ -3,7 +3,6 @@ package com.quemistry.question_ms.mapper;
 import com.quemistry.question_ms.entity.MCQ;
 import com.quemistry.question_ms.entity.Skill;
 import com.quemistry.question_ms.entity.Topic;
-import com.quemistry.question_ms.mapper.MCQMapper;
 import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.QuestionOption;
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,7 @@ class MCQMapperTest {
         List<QuestionOption> options = Arrays.asList(option1, option2);
         Topic topic1 = new Topic(1L, "Java");
         List<Topic> topics = Collections.singletonList(topic1);
-        Skill skill1 = new Skill(1L, "Programming", 2L);
+        Skill skill1 = new Skill(1L, "Programming", topic1);
         List<Skill> skills = Collections.singletonList(skill1);
 
         MCQ mcq = new MCQ();
@@ -50,7 +49,7 @@ class MCQMapperTest {
     }
 
     private Skill getSkill (){
-        return new Skill(1L, "Programming", 2L);
+        return new Skill(1L, "Programming", getTopic());
     }
 
     @Test
