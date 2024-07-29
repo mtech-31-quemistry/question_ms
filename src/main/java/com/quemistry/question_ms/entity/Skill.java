@@ -1,11 +1,12 @@
 package com.quemistry.question_ms.entity;
 
+import com.quemistry.question_ms.enums.SkillStatus;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,11 @@ public class Skill {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "topic_id", referencedColumnName = "id")
-    private Topic topic;
+    @Column(name = "status")
+    @Convert(converter = SkillStatus.Converter.class)
+    private SkillStatus status;
+//    @ManyToOne
+//    @JoinColumn(name = "topic_id", referencedColumnName = "id")
+//    private Topic topic;
 
 }

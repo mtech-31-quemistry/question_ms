@@ -1,40 +1,40 @@
 -- Topics
-INSERT INTO qms_question.topic (id, "name")
+INSERT INTO qms_question.topic (id, "name", status)
 VALUES
-    (1, 'Atomic Structure'),
-    (2, 'Chemical Bonding'),
-    (3, 'States of Matter'),
-    (4, 'Chemical Energetics'),
-    (5, 'Redox Reactions'),
-    (6, 'Equilibria'),
-    (7, 'Kinetics'),
-    (8, 'Organic Chemistry'),
-    (9, 'Inorganic Chemistry'),
-    (10, 'Analytical Techniques');
+    (1, 'Atomic Structure', 'ACTIVE'),
+    (2, 'Chemical Bonding','ACTIVE'),
+    (3, 'States of Matter','ACTIVE'),
+    (4, 'Chemical Energetics','ACTIVE'),
+    (5, 'Redox Reactions','ACTIVE'),
+    (6, 'Equilibria','ACTIVE'),
+    (7, 'Kinetics','ACTIVE'),
+    (8, 'Organic Chemistry','ACTIVE'),
+    (9, 'Inorganic Chemistry','ACTIVE'),
+    (10, 'Analytical Techniques','ACTIVE');
 
 -- Skills
-INSERT INTO qms_question.skill (id, "name", topic_id)
+INSERT INTO qms_question.skill (id, "name", status, topic_id)
 VALUES
-    (1, 'Electron Configuration', 1),
-    (2, 'Ionisation Energy', 1),
-    (3, 'Ionic Bonding', 2),
-    (4, 'Covalent Bonding', 2),
-    (5, 'Intermolecular Forces', 3),
-    (6, 'Ideal Gas Law', 3),
-    (7, 'Enthalpy Changes', 4),
-    (8, 'Hess''s Law', 4),
-    (9, 'Oxidation Numbers', 5),
-    (10, 'Balancing Redox Equations', 5),
-    (11, 'Le Chatelier''s Principle', 6),
-    (12, 'Equilibrium Constants', 6),
-    (13, 'Rate of Reaction', 7),
-    (14, 'Activation Energy', 7),
-    (15, 'Functional Groups', 8),
-    (16, 'Reaction Mechanisms', 8),
-    (17, 'Transition Metals', 9),
-    (18, 'Group 2 Elements', 9),
-    (19, 'Infrared Spectroscopy', 10),
-    (20, 'Mass Spectrometry', 10);
+    (1, 'Electron Configuration','ACTIVE', 1),
+    (2, 'Ionisation Energy','ACTIVE', 1),
+    (3, 'Ionic Bonding','ACTIVE', 2),
+    (4, 'Covalent Bonding','ACTIVE', 2),
+    (5, 'Intermolecular Forces','ACTIVE', 3),
+    (6, 'Ideal Gas Law','ACTIVE', 3),
+    (7, 'Enthalpy Changes','ACTIVE', 4),
+    (8, 'Hess''s Law','ACTIVE', 4),
+    (9, 'Oxidation Numbers','ACTIVE', 5),
+    (10, 'Balancing Redox Equations','ACTIVE', 5),
+    (11, 'Le Chatelier''s Principle','ACTIVE', 6),
+    (12, 'Equilibrium Constants','ACTIVE', 6),
+    (13, 'Rate of Reaction','ACTIVE', 7),
+    (14, 'Activation Energy','ACTIVE', 7),
+    (15, 'Functional Groups','ACTIVE', 8),
+    (16, 'Reaction Mechanisms','ACTIVE', 8),
+    (17, 'Transition Metals','ACTIVE', 9),
+    (18, 'Group 2 Elements','ACTIVE', 9),
+    (19, 'Infrared Spectroscopy','ACTIVE', 10),
+    (20, 'Mass Spectrometry','ACTIVE', 10);
 
 
 -- MCQ Question

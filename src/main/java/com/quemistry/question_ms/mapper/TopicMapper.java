@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,  uses = {SkillMapper.class})
 public interface TopicMapper {
 
     TopicMapper INSTANCE = Mappers.getMapper(TopicMapper.class);

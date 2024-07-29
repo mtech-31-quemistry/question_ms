@@ -1,12 +1,18 @@
 package com.quemistry.question_ms.service;
 
 import com.quemistry.question_ms.entity.MCQ;
+import com.quemistry.question_ms.entity.Skill;
+import com.quemistry.question_ms.entity.Topic;
 import com.quemistry.question_ms.mapper.MCQMapper;
 import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.RetrieveMCQByIdsRequest;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
+import com.quemistry.question_ms.model.SaveMcqRequest;
+import com.quemistry.question_ms.model.SaveTopicsRequest;
 import com.quemistry.question_ms.repository.MCQRepository;
+import com.quemistry.question_ms.repository.SkillRepository;
+import com.quemistry.question_ms.repository.TopicRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,16 +26,25 @@ import java.util.List;
 public class MCQServiceImpl implements MCQService {
 
     private final MCQRepository mcqRepository;
+    private final TopicRepository topicRepository;
+    private final SkillRepository skillRepository;
 
     private static final MCQMapper mcqMapper = MCQMapper.INSTANCE;
 
-    public MCQServiceImpl(MCQRepository mcqRepository) {
+    public MCQServiceImpl(MCQRepository mcqRepository, TopicRepository topicRepository, SkillRepository skillRepository) {
         this.mcqRepository = mcqRepository;
+        this.topicRepository = topicRepository;
+        this.skillRepository = skillRepository;
     }
 
     @Override
-    public MCQDto saveQuestion(MCQDto mcqDto) {
-        return mcqMapper.mcqToMcqDto(mcqRepository.save(mcqMapper.mcqDtoToMcq(mcqDto)));
+    public MCQDto saveQuestion(SaveMcqRequest saveMcqRequest) {
+        MCQ mcq = mcqMapper.mcqDtoToMcq(saveMcqRequest);
+        List<Topic> topics = topicRepository.findAllById(saveMcqRequest.getTopics());
+        List<Skill> skills = skillRepository.findAllById(saveMcqRequest.getSkills());
+        mcq.setTopics(topics);
+        mcq.setSkills(skills);
+        return mcqMapper.mcqToMcqDto(mcqRepository.save(mcq));
     }
 
     @Override
@@ -42,7 +57,6 @@ public class MCQServiceImpl implements MCQService {
 
     @Override
     public RetrieveMCQResponse retrieveMCQs(RetrieveMCQRequest retrieveMCQRequest) {
-        List<MCQ> results;
         RetrieveMCQResponse retrieveMCQResponse = new RetrieveMCQResponse();
 
         List<MCQ> mcqs;

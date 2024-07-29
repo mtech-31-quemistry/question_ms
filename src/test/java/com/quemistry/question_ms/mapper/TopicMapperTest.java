@@ -1,11 +1,16 @@
 package com.quemistry.question_ms.mapper;
 
+import com.quemistry.question_ms.entity.Skill;
 import com.quemistry.question_ms.entity.Topic;
+import com.quemistry.question_ms.enums.TopicStatus;
+import com.quemistry.question_ms.model.SkillDto;
 import com.quemistry.question_ms.model.TopicDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,11 +25,11 @@ class TopicMapperTest {
     }
 
     private Topic createTopic(Long id, String name) {
-        return new Topic(id, name);
+        return new Topic(id, name, TopicStatus.ACTIVE, Collections.singletonList(new Skill()));
     }
 
     private TopicDto createTopicDto(Long id, String name) {
-        return new TopicDto(id, name);
+        return new TopicDto(id, name, TopicStatus.ACTIVE, Collections.singletonList(new SkillDto()));
     }
 
     @Test

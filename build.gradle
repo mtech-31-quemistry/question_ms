@@ -110,7 +110,7 @@ sonar {
 		property "sonar.projectKey", "mtech-31-quemistry_question_ms"
 		property "sonar.organization", "mtech-31-quemistry"
 		property "sonar.host.url", "https://sonarcloud.io"
-		property 'sonar.coverage.exclusions', "**/config/**, **/entity/**, **/model/**, **/Application*, **/constant/**, **/entity/**/**"
+		property 'sonar.coverage.exclusions', "**/config/**, **/entity/**, **/model/**, **/Application*, **/constant/**, **/mapper/**, **/entity/**/**"
 		property "sonar.cpd.exclusions", "**/entity/**"
 	}
 }

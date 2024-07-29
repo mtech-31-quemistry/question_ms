@@ -5,6 +5,7 @@ import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.RetrieveMCQByIdsRequest;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
+import com.quemistry.question_ms.model.SaveMcqRequest;
 import com.quemistry.question_ms.service.MCQService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,16 +69,18 @@ class QuestionControllerTest {
     @Test
     void testSaveQuestion() throws Exception {
         MCQDto mcqDto = new MCQDto();
+        SaveMcqRequest saveMcqRequest = SaveMcqRequest.builder().build();
         // Set properties of mcqDto as needed
 
-        when(mcqService.saveQuestion(mcqDto)).thenReturn(mcqDto);
+        when(mcqService.saveQuestion(saveMcqRequest)).thenReturn(mcqDto);
 
         ObjectMapper objectMapper = new ObjectMapper();
+        String saveMcqRequestJson = objectMapper.writeValueAsString(saveMcqRequest);
         String mcqDtoJson = objectMapper.writeValueAsString(mcqDto);
 
         mockMvc.perform(post("/v1/questions")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mcqDtoJson)
+                        .content(saveMcqRequestJson )
                         .header("Some-Header", "value"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(mcqDtoJson));

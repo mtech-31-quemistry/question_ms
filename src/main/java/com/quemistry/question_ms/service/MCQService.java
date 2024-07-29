@@ -4,10 +4,11 @@ import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.RetrieveMCQByIdsRequest;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
+import com.quemistry.question_ms.model.SaveMcqRequest;
 
 public interface MCQService {
 
-    MCQDto saveQuestion(MCQDto MCQDto);
+    MCQDto saveQuestion(SaveMcqRequest saveMcqRequest);
 
     RetrieveMCQResponse retrieveMCQs(RetrieveMCQRequest retrieveMCQRequest);
 

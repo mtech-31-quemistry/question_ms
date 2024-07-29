@@ -16,7 +16,10 @@ import com.quemistry.question_ms.model.QuestionOption;
 import com.quemistry.question_ms.model.RetrieveMCQByIdsRequest;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
+import com.quemistry.question_ms.model.SaveMcqRequest;
 import com.quemistry.question_ms.repository.MCQRepository;
+import com.quemistry.question_ms.repository.SkillRepository;
+import com.quemistry.question_ms.repository.TopicRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -36,6 +39,10 @@ class MCQServiceImplTest {
     @Mock
     private MCQRepository mcqRepository;
     @Mock
+    private TopicRepository topicRepository;
+    @Mock
+    private SkillRepository skillRepository;
+    @Mock
     private MCQMapper mcqMapper;
     @InjectMocks
     private MCQServiceImpl mcqService;
@@ -46,29 +53,29 @@ class MCQServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        mcqService = new MCQServiceImpl(mcqRepository);
+        mcqService = new MCQServiceImpl(mcqRepository, topicRepository, skillRepository);
     }
 
     @Test
     void testSaveQuestion() {
-        MCQDto mcqDto = new MCQDto();
+        SaveMcqRequest saveMcqRequest = new SaveMcqRequest();
         // Set properties of mcqDto as needed
-        mcqDto.setId(1L);
-        mcqDto.setStem("Sample Question?");
+        saveMcqRequest.setId(1L);
+        saveMcqRequest.setStem("Sample Question?");
         QuestionOption option = QuestionOption.builder()
                 .text("Option 1")
                 .isAnswer(true)
                 .build();
-        mcqDto.setOptions(List.of(option));
+        saveMcqRequest.setOptions(List.of(option));
 
-        MCQ mcq = MCQMapper.INSTANCE.mcqDtoToMcq(mcqDto);
+        MCQ mcq = MCQMapper.INSTANCE.mcqDtoToMcq(saveMcqRequest);
         when(mcqRepository.save(any(MCQ.class))).thenReturn(mcq);
-        when(mcqMapper.mcqDtoToMcq(any(MCQDto.class))).thenReturn(mcq);
-        MCQDto result = mcqService.saveQuestion(mcqDto);
+        when(mcqMapper.mcqDtoToMcq(any(SaveMcqRequest.class))).thenReturn(mcq);
+        MCQDto result = mcqService.saveQuestion(saveMcqRequest);
 
-        assertEquals(mcqDto.getId(), result.getId());
-        assertEquals(mcqDto.getStem(), result.getStem());
-        assertEquals(mcqDto.getOptions().size(), result.getOptions().size());
+        assertEquals(saveMcqRequest.getId(), result.getId());
+        assertEquals(saveMcqRequest.getStem(), result.getStem());
+        assertEquals(saveMcqRequest.getOptions().size(), result.getOptions().size());
     }
 
 

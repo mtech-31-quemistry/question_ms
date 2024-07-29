@@ -4,6 +4,7 @@ import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.RetrieveMCQByIdsRequest;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
+import com.quemistry.question_ms.model.SaveMcqRequest;
 import com.quemistry.question_ms.service.MCQService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -40,9 +41,9 @@ public class QuestionController {
 
 
     @PostMapping
-    public ResponseEntity<MCQDto> saveQuestion(@RequestHeader HttpHeaders headers, @RequestBody MCQDto MCQDto) {
+    public ResponseEntity<MCQDto> saveQuestion(@RequestHeader HttpHeaders headers, @RequestBody SaveMcqRequest saveMcqRequest) {
         log.info("POST /v1/questions");
-        return ResponseEntity.ok(mcqService.saveQuestion(MCQDto));
+        return ResponseEntity.ok(mcqService.saveQuestion(saveMcqRequest));
     }
 
     @GetMapping

@@ -1,6 +1,7 @@
 package com.quemistry.question_ms.model;
 
 
+import com.quemistry.question_ms.enums.SkillStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +15,6 @@ public class SkillDto {
 
     private Long id;
     private String name;
-    private Long topicId;
+    private SkillStatus status;
+//    private Long topicId;
 }

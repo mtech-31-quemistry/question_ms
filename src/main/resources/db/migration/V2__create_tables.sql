@@ -31,6 +31,7 @@ CREATE TABLE qms_question.mcq (
 CREATE TABLE qms_question.topic (
 	id SERIAL NOT NULL,
 	"name" varchar(255) NULL,
+	status varchar(20) NULL,
 	CONSTRAINT topic_pkey PRIMARY KEY (id)
 );
 
@@ -48,6 +49,7 @@ CREATE TABLE qms_question.skill (
 	id SERIAL NOT NULL,
 	topic_id int4 NULL,
 	"name" varchar(255) NULL,
+    status varchar(20) NULL,
 	CONSTRAINT skill_pkey PRIMARY KEY (id),
 	CONSTRAINT fk_topic FOREIGN KEY (topic_id) REFERENCES qms_question.topic (id)
 );

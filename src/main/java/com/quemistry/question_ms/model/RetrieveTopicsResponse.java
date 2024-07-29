@@ -1,6 +1,5 @@
 package com.quemistry.question_ms.model;
 
-import com.quemistry.question_ms.enums.TopicStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,10 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TopicDto {
+public class RetrieveTopicsResponse {
 
-    private Long id;
-    private String name;
-    private TopicStatus status;
-    private List<SkillDto> skills;
+    private List<TopicDto> topics;
+
 }

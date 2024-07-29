@@ -3,8 +3,11 @@ package com.quemistry.question_ms.mapper;
 import com.quemistry.question_ms.entity.MCQ;
 import com.quemistry.question_ms.entity.Skill;
 import com.quemistry.question_ms.entity.Topic;
+import com.quemistry.question_ms.enums.SkillStatus;
+import com.quemistry.question_ms.enums.TopicStatus;
 import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.QuestionOption;
+import com.quemistry.question_ms.model.SaveMcqRequest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -22,10 +25,11 @@ class MCQMapperTest {
         QuestionOption option1 = new QuestionOption(1, "Option 1", "Explanation 1", true);
         QuestionOption option2 = new QuestionOption(2, "Option 2", "Explanation 2", false);
         List<QuestionOption> options = Arrays.asList(option1, option2);
-        Topic topic1 = new Topic(1L, "Java");
-        List<Topic> topics = Collections.singletonList(topic1);
-        Skill skill1 = new Skill(1L, "Programming", topic1);
+
+        Skill skill1 = getSkill();
         List<Skill> skills = Collections.singletonList(skill1);
+        Topic topic1 = getTopic();
+        List<Topic> topics = Collections.singletonList(topic1);
 
         MCQ mcq = new MCQ();
         mcq.setId(id);
@@ -45,11 +49,11 @@ class MCQMapperTest {
     }
 
     private Topic getTopic (){
-        return new Topic(1L, "Java");
+        return new Topic(1L, "Java", TopicStatus.ACTIVE, Collections.singletonList(getSkill()));
     }
 
     private Skill getSkill (){
-        return new Skill(1L, "Programming", getTopic());
+        return new Skill(1L, "Programming", SkillStatus.ACTIVE);
     }
 
     @Test
@@ -102,30 +106,28 @@ class MCQMapperTest {
         QuestionOption option2 = new QuestionOption(2, "Option 2", "Explanation 2", false);
         List<QuestionOption> options = Arrays.asList(option1, option2);
 
-        MCQDto mcqDto = new MCQDto();
-        mcqDto.setId(1L);
-        mcqDto.setStem("What is Java?");
-        mcqDto.setOptions(options);
-        mcqDto.setTopics(TopicMapper.INSTANCE.topicsToTopicDtos(Collections.singletonList(getTopic())));
-        mcqDto.setSkills(SkillMapper.INSTANCE.skillsToSkillDtos(Collections.singletonList(getSkill())));
-        mcqDto.setStatus("Published");
-        mcqDto.setPublishedOn(new Date());
-        mcqDto.setPublishedBy("Author");
-        mcqDto.setClosedOn(new Date());
-        mcqDto.setClosedBy("Admin");
-        mcqDto.setCreatedOn(new Date());
-        mcqDto.setCreatedBy("Author");
+        SaveMcqRequest saveMcqRequest = new SaveMcqRequest();
+        saveMcqRequest.setId(1L);
+        saveMcqRequest.setStem("What is Java?");
+        saveMcqRequest.setOptions(options);
+        saveMcqRequest.setTopics(List.of(1L));
+        saveMcqRequest.setSkills(List.of(2L));
+        saveMcqRequest.setStatus("Published");
+        saveMcqRequest.setPublishedOn(new Date());
+        saveMcqRequest.setPublishedBy("Author");
+        saveMcqRequest.setClosedOn(new Date());
+        saveMcqRequest.setClosedBy("Admin");
+        saveMcqRequest.setCreatedOn(new Date());
+        saveMcqRequest.setCreatedBy("Author");
 
         // Act
-        MCQ mcq = mcqMapper.mcqDtoToMcq(mcqDto);
+        MCQ mcq = mcqMapper.mcqDtoToMcq(saveMcqRequest);
 
         // Assert
         assertThat(mcq).isNotNull();
         assertThat(mcq.getId()).isEqualTo(1L);
         assertThat(mcq.getStem()).isEqualTo("What is Java?");
         assertThat(mcq.getOptions()).hasSize(2);
-        assertThat(mcq.getTopics()).hasSize(1);
-        assertThat(mcq.getSkills()).hasSize(1);
         assertThat(mcq.getStatus()).isEqualTo("Published");
         assertThat(mcq.getPublishedOn()).isNotNull();
         assertThat(mcq.getPublishedBy()).isEqualTo("Author");
