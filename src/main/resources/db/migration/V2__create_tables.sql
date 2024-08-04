@@ -6,15 +6,16 @@
 
 CREATE TABLE qms_question.mcq (
 	id SERIAL NOT NULL,
-	published_on timestamp(6) NULL,
-	closed_by varchar(255) NULL,
-	created_by varchar(255) NULL,
-	published_by varchar(255) NULL,
 	status varchar(255) NULL,
 	stem varchar(255) NULL,
     "options" varchar NULL,
-    closed_on timestamp(6) NULL,
-    created_on timestamp(6) NULL,
+    closed_on timestamp NULL,
+    closed_by varchar(255) NULL,
+    published_on timestamp NULL,
+    published_by varchar(255) NULL,
+    created_by varchar(255) NULL,
+    updated_ts timestamp NULL,
+    created_ts timestamp NULL,
 	CONSTRAINT mcq_pkey PRIMARY KEY (id)
 );
 

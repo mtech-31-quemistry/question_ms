@@ -2,14 +2,12 @@ package com.quemistry.question_ms.service;
 
 import com.quemistry.question_ms.entity.MCQ;
 import com.quemistry.question_ms.entity.Skill;
-import com.quemistry.question_ms.entity.Topic;
 import com.quemistry.question_ms.mapper.MCQMapper;
 import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.RetrieveMCQByIdsRequest;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
 import com.quemistry.question_ms.model.SaveMcqRequest;
-import com.quemistry.question_ms.model.SaveTopicsRequest;
 import com.quemistry.question_ms.repository.MCQRepository;
 import com.quemistry.question_ms.repository.SkillRepository;
 import com.quemistry.question_ms.repository.TopicRepository;
@@ -40,9 +38,9 @@ public class MCQServiceImpl implements MCQService {
     @Override
     public MCQDto saveQuestion(SaveMcqRequest saveMcqRequest) {
         MCQ mcq = mcqMapper.mcqDtoToMcq(saveMcqRequest);
-        List<Topic> topics = topicRepository.findAllById(saveMcqRequest.getTopics());
+//        List<Topic> topics = topicRepository.findAllById(saveMcqRequest.getTopics());
+//        mcq.setTopics(topics);
         List<Skill> skills = skillRepository.findAllById(saveMcqRequest.getSkills());
-        mcq.setTopics(topics);
         mcq.setSkills(skills);
         return mcqMapper.mcqToMcqDto(mcqRepository.save(mcq));
     }

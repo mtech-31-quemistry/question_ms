@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 import java.util.List;
@@ -57,7 +59,11 @@ public class MCQ {
 
     private String closedBy;
 
-    private Date createdOn;
+    @UpdateTimestamp
+    private Date updatedTs;
+
+    @CreationTimestamp
+    private Date createdTs;
 
     private String createdBy;
 
