@@ -3,6 +3,7 @@ package com.quemistry.question_ms.mapper;
 import com.quemistry.question_ms.entity.MCQ;
 import com.quemistry.question_ms.entity.Skill;
 import com.quemistry.question_ms.entity.Topic;
+import com.quemistry.question_ms.enums.QuestionStatus;
 import com.quemistry.question_ms.enums.SkillStatus;
 import com.quemistry.question_ms.enums.TopicStatus;
 import com.quemistry.question_ms.model.MCQDto;
@@ -21,7 +22,7 @@ class MCQMapperTest {
 
     private final MCQMapper mcqMapper = MCQMapper.INSTANCE;
 
-    private MCQ createMCQ(Long id, String stem, String status) {
+    private MCQ createMCQ(Long id, String stem, QuestionStatus status) {
         QuestionOption option1 = new QuestionOption(1, "Option 1", "Explanation 1", true);
         QuestionOption option2 = new QuestionOption(2, "Option 2", "Explanation 2", false);
         List<QuestionOption> options = Arrays.asList(option1, option2);
@@ -59,7 +60,7 @@ class MCQMapperTest {
     @Test
     void testMcqToMcqDto() {
         // Arrange
-        MCQ mcq = createMCQ(1L, "What is Java?", "Published");
+        MCQ mcq = createMCQ(1L, "What is Java?", QuestionStatus.PUBLISHED);
 
         // Act
         MCQDto mcqDto = mcqMapper.mcqToMcqDto(mcq);
@@ -71,7 +72,7 @@ class MCQMapperTest {
         assertThat(mcqDto.getOptions()).hasSize(2);
         assertThat(mcqDto.getTopics()).hasSize(1);
         assertThat(mcqDto.getSkills()).hasSize(1);
-        assertThat(mcqDto.getStatus()).isEqualTo("Published");
+        assertThat(mcqDto.getStatus()).isEqualTo(QuestionStatus.PUBLISHED);
         assertThat(mcqDto.getPublishedOn()).isNotNull();
         assertThat(mcqDto.getPublishedBy()).isEqualTo("Author");
         assertThat(mcqDto.getClosedOn()).isNotNull();
@@ -83,8 +84,8 @@ class MCQMapperTest {
     @Test
     void testMcqsToMcqDtos() {
         // Arrange
-        MCQ mcq1 = createMCQ(1L, "What is Java?", "Published");
-        MCQ mcq2 = createMCQ(2L, "What is Spring?", "Draft");
+        MCQ mcq1 = createMCQ(1L, "What is Java?", QuestionStatus.PUBLISHED);
+        MCQ mcq2 = createMCQ(2L, "What is Spring?", QuestionStatus.DRAFT);
         List<MCQ> mcqs = Arrays.asList(mcq1, mcq2);
 
         // Act
@@ -112,7 +113,7 @@ class MCQMapperTest {
         saveMcqRequest.setOptions(options);
         saveMcqRequest.setTopics(List.of(1L));
         saveMcqRequest.setSkills(List.of(2L));
-        saveMcqRequest.setStatus("Published");
+        saveMcqRequest.setStatus("PUBLISHED");
         saveMcqRequest.setPublishedOn(new Date());
         saveMcqRequest.setPublishedBy("Author");
         saveMcqRequest.setClosedOn(new Date());
@@ -128,7 +129,7 @@ class MCQMapperTest {
         assertThat(mcq.getId()).isEqualTo(1L);
         assertThat(mcq.getStem()).isEqualTo("What is Java?");
         assertThat(mcq.getOptions()).hasSize(2);
-        assertThat(mcq.getStatus()).isEqualTo("Published");
+        assertThat(mcq.getStatus().getValue()).isEqualTo("PUBLISHED");
         assertThat(mcq.getPublishedOn()).isNotNull();
         assertThat(mcq.getPublishedBy()).isEqualTo("Author");
         assertThat(mcq.getClosedOn()).isNotNull();

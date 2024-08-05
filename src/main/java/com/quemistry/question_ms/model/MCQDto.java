@@ -1,5 +1,6 @@
 package com.quemistry.question_ms.model;
 
+import com.quemistry.question_ms.enums.QuestionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class MCQDto {
     private List<QuestionOption> options;
     private List<TopicDto> topics;
     private List<SkillDto> skills;
-    private String status;
+    private QuestionStatus status;
     private Date publishedOn;
     private String publishedBy;
     private Date closedOn;

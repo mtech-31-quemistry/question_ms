@@ -15,8 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -61,7 +63,7 @@ public class MCQServiceImpl implements MCQService {
         // paged
         if (retrieveMCQRequest.getPageNumber() != null && retrieveMCQRequest.getPageSize()!= null){
             log.info("paged");
-            Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize());
+            Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize(), Sort.by("dsc", "id"));
             Page<MCQ> mcqPage;
 
             // no filter
@@ -71,6 +73,12 @@ public class MCQServiceImpl implements MCQService {
 
             } else {
                 log.info("filter by topic, skill");
+                if (retrieveMCQRequest.getTopics() == null){
+                    retrieveMCQRequest.setTopics(Collections.emptyList());
+                }
+                if (retrieveMCQRequest.getSkills() == null){
+                    retrieveMCQRequest.setSkills(Collections.emptyList());
+                }
                 // got filter by topic, skill
                 mcqPage = mcqRepository.findByTopicOrSkill(retrieveMCQRequest.getTopics(), retrieveMCQRequest.getSkills(), pageable);
             }
@@ -90,6 +98,12 @@ public class MCQServiceImpl implements MCQService {
                 return retrieveMCQs();
             } else { // filter by topic, skill
                 log.info("filter by topic, skill");
+                if (retrieveMCQRequest.getTopics() == null){
+                    retrieveMCQRequest.setTopics(Collections.emptyList());
+                }
+                if (retrieveMCQRequest.getSkills() == null){
+                    retrieveMCQRequest.setSkills(Collections.emptyList());
+                }
                 mcqs = mcqRepository.findByTopicOrSkill(retrieveMCQRequest.getTopics(), retrieveMCQRequest.getSkills());
             }
             retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));

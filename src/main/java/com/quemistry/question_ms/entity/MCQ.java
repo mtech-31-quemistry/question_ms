@@ -1,8 +1,18 @@
 package com.quemistry.question_ms.entity;
 
+import com.quemistry.question_ms.enums.QuestionStatus;
 import com.quemistry.question_ms.model.QuestionOption;
 import com.quemistry.question_ms.util.OptionConverter;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,7 +59,9 @@ public class MCQ {
     )
     private List<Skill> skills;
 
-    private String status;
+    @Column(name = "status")
+    @Convert(converter = QuestionStatus.Converter.class)
+    private QuestionStatus status;
 
     private Date publishedOn;
 
