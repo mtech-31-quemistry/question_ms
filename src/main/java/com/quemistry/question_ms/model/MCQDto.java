@@ -23,8 +23,8 @@ public class MCQDto {
     private QuestionStatus status;
     private Date publishedOn;
     private String publishedBy;
-    private Date closedOn;
-    private String closedBy;
+    private Date archivedOn;
+    private String archivedBy;
     private Date updatedTs;
     private Date createdTs;
     private String createdBy;

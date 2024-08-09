@@ -16,7 +16,9 @@ public class RetrieveMCQRequest {
     private List<Long> topics;
     private List<Long> skills;
 
-    private Integer pageNumber;
-    private Integer pageSize;
+    @Builder.Default
+    private Integer pageNumber = 0;
+    @Builder.Default
+    private Integer pageSize = 60;
 
 }

@@ -4,6 +4,7 @@ import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.RetrieveMCQByIdsRequest;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
+import com.quemistry.question_ms.model.CreateMcqRequest;
 import com.quemistry.question_ms.model.SaveMcqRequest;
 import com.quemistry.question_ms.service.MCQService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,10 +41,13 @@ public class QuestionController {
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
-
     @PostMapping
+    public ResponseEntity<MCQDto> createQuestion(@RequestHeader HttpHeaders headers, @RequestBody CreateMcqRequest createMcqRequest) {
+        return ResponseEntity.ok(mcqService.createQuestion(createMcqRequest));
+    }
+
+    @PutMapping
     public ResponseEntity<MCQDto> saveQuestion(@RequestHeader HttpHeaders headers, @RequestBody SaveMcqRequest saveMcqRequest) {
-        log.info("POST /v1/questions");
         return ResponseEntity.ok(mcqService.saveQuestion(saveMcqRequest));
     }
 

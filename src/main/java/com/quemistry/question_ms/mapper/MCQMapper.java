@@ -1,8 +1,9 @@
 package com.quemistry.question_ms.mapper;
 
 import com.quemistry.question_ms.entity.MCQ;
+import com.quemistry.question_ms.enums.QuestionStatus;
 import com.quemistry.question_ms.model.MCQDto;
-import com.quemistry.question_ms.model.SaveMcqRequest;
+import com.quemistry.question_ms.model.CreateMcqRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -21,7 +22,9 @@ public interface MCQMapper {
     @Mapping(source = "topics", target = "topics")
     List<MCQDto> mcqsToMcqDtos(List<MCQ> mcqs);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "topics", target = "topics", ignore = true)
     @Mapping(source = "skills", target = "skills", ignore = true)
-    MCQ mcqDtoToMcq(SaveMcqRequest saveMcqRequest);
+    @Mapping(target = "status", constant = "DRAFT")
+    MCQ createMcqRequestToMcq(CreateMcqRequest createMcqRequest);
 }

@@ -6,9 +6,9 @@ import com.quemistry.question_ms.entity.Topic;
 import com.quemistry.question_ms.enums.QuestionStatus;
 import com.quemistry.question_ms.enums.SkillStatus;
 import com.quemistry.question_ms.enums.TopicStatus;
+import com.quemistry.question_ms.model.CreateMcqRequest;
 import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.QuestionOption;
-import com.quemistry.question_ms.model.SaveMcqRequest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -41,8 +41,8 @@ class MCQMapperTest {
         mcq.setStatus(status);
         mcq.setPublishedOn(new Date());
         mcq.setPublishedBy("Author");
-        mcq.setClosedOn(new Date());
-        mcq.setClosedBy("Admin");
+        mcq.setArchivedOn(new Date());
+        mcq.setArchivedBy("Admin");
         mcq.setCreatedTs(new Date());
         mcq.setCreatedBy("Author");
 
@@ -75,8 +75,8 @@ class MCQMapperTest {
         assertThat(mcqDto.getStatus()).isEqualTo(QuestionStatus.PUBLISHED);
         assertThat(mcqDto.getPublishedOn()).isNotNull();
         assertThat(mcqDto.getPublishedBy()).isEqualTo("Author");
-        assertThat(mcqDto.getClosedOn()).isNotNull();
-        assertThat(mcqDto.getClosedBy()).isEqualTo("Admin");
+        assertThat(mcqDto.getArchivedOn()).isNotNull();
+        assertThat(mcqDto.getArchivedBy()).isEqualTo("Admin");
         assertThat(mcqDto.getCreatedTs()).isNotNull();
         assertThat(mcqDto.getCreatedBy()).isEqualTo("Author");
     }
@@ -101,39 +101,36 @@ class MCQMapperTest {
     }
 
     @Test
-    void testMcqDtoToMcq() {
+    void testCreateMcqRequestToMcq() {
         // Arrange
         QuestionOption option1 = new QuestionOption(1, "Option 1", "Explanation 1", true);
         QuestionOption option2 = new QuestionOption(2, "Option 2", "Explanation 2", false);
         List<QuestionOption> options = Arrays.asList(option1, option2);
 
-        SaveMcqRequest saveMcqRequest = new SaveMcqRequest();
-        saveMcqRequest.setId(1L);
-        saveMcqRequest.setStem("What is Java?");
-        saveMcqRequest.setOptions(options);
-        saveMcqRequest.setTopics(List.of(1L));
-        saveMcqRequest.setSkills(List.of(2L));
-        saveMcqRequest.setStatus("PUBLISHED");
-        saveMcqRequest.setPublishedOn(new Date());
-        saveMcqRequest.setPublishedBy("Author");
-        saveMcqRequest.setClosedOn(new Date());
-        saveMcqRequest.setClosedBy("Admin");
-        saveMcqRequest.setCreatedTs(new Date());
-        saveMcqRequest.setCreatedBy("Author");
+        CreateMcqRequest createMcqRequest = new CreateMcqRequest();
+        createMcqRequest.setStem("What is Java?");
+        createMcqRequest.setOptions(options);
+        createMcqRequest.setTopics(List.of(1L));
+        createMcqRequest.setSkills(List.of(2L));
+        createMcqRequest.setPublishedOn(new Date());
+        createMcqRequest.setPublishedBy("Author");
+        createMcqRequest.setArchivedOn(new Date());
+        createMcqRequest.setArchivedBy("Admin");
+        createMcqRequest.setCreatedTs(new Date());
+        createMcqRequest.setCreatedBy("Author");
 
         // Act
-        MCQ mcq = mcqMapper.mcqDtoToMcq(saveMcqRequest);
+        MCQ mcq = mcqMapper.createMcqRequestToMcq(createMcqRequest);
 
         // Assert
         assertThat(mcq).isNotNull();
-        assertThat(mcq.getId()).isEqualTo(1L);
         assertThat(mcq.getStem()).isEqualTo("What is Java?");
         assertThat(mcq.getOptions()).hasSize(2);
-        assertThat(mcq.getStatus().getValue()).isEqualTo("PUBLISHED");
+        assertThat(mcq.getStatus()).isEqualTo(QuestionStatus.DRAFT);
         assertThat(mcq.getPublishedOn()).isNotNull();
         assertThat(mcq.getPublishedBy()).isEqualTo("Author");
-        assertThat(mcq.getClosedOn()).isNotNull();
-        assertThat(mcq.getClosedBy()).isEqualTo("Admin");
+        assertThat(mcq.getArchivedOn()).isNotNull();
+        assertThat(mcq.getArchivedBy()).isEqualTo("Admin");
         assertThat(mcq.getCreatedTs()).isNotNull();
         assertThat(mcq.getCreatedBy()).isEqualTo("Author");
     }

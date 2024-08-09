@@ -67,9 +67,9 @@ public class MCQ {
 
     private String publishedBy;
 
-    private Date closedOn;
+    private Date archivedOn;
 
-    private String closedBy;
+    private String archivedBy;
 
     @UpdateTimestamp
     private Date updatedTs;

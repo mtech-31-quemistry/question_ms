@@ -1,6 +1,5 @@
 package com.quemistry.question_ms.model;
 
-import com.quemistry.question_ms.enums.QuestionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,18 +12,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SaveMcqRequest {
+public class CreateMcqRequest {
 
-    private Long id;
     private String stem;
     private List<QuestionOption> options;
     private List<Long> topics;
     private List<Long> skills;
-    private QuestionStatus status;
+//    private String status;
     private Date publishedOn;
     private String publishedBy;
-    private Date closedOn;
-    private String closedBy;
+    private Date archivedOn;
+    private String archivedBy;
     private Date updatedTs;
     private Date createdTs;
     private String createdBy;
