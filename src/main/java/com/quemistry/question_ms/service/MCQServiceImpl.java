@@ -63,7 +63,7 @@ public class MCQServiceImpl implements MCQService {
         // paged
         if (retrieveMCQRequest.getPageNumber() != null && retrieveMCQRequest.getPageSize()!= null){
             log.info("paged");
-            Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize(), Sort.by("dsc", "id"));
+            Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
             Page<MCQ> mcqPage;
 
             // no filter
