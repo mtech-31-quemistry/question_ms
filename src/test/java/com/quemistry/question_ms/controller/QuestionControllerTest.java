@@ -1,11 +1,11 @@
 package com.quemistry.question_ms.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quemistry.question_ms.model.CreateMcqRequest;
 import com.quemistry.question_ms.model.MCQDto;
 import com.quemistry.question_ms.model.RetrieveMCQByIdsRequest;
 import com.quemistry.question_ms.model.RetrieveMCQRequest;
 import com.quemistry.question_ms.model.RetrieveMCQResponse;
-import com.quemistry.question_ms.model.CreateMcqRequest;
 import com.quemistry.question_ms.model.SaveMcqRequest;
 import com.quemistry.question_ms.service.MCQService;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,10 +31,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class QuestionControllerTest {
@@ -96,7 +95,7 @@ class QuestionControllerTest {
 
         Mockito.when(mcqService.saveQuestion(any(SaveMcqRequest.class))).thenReturn(mcqDto);
 
-        mockMvc.perform(put("/v1/questions")
+        mockMvc.perform(patch("/v1/questions")
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(saveMcqRequest)))
                 .andExpect(status().isOk())

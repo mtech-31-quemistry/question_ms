@@ -1,6 +1,7 @@
 package com.quemistry.question_ms.model;
 
 import com.quemistry.question_ms.enums.QuestionStatus;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.List;
 @Builder
 public class SaveMcqRequest {
 
+    @NotNull
     private Long id;
     private String stem;
     private List<QuestionOption> options;

@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,20 +47,18 @@ public class QuestionController {
         return ResponseEntity.ok(mcqService.createQuestion(createMcqRequest));
     }
 
-    @PutMapping
+    @PatchMapping
     public ResponseEntity<MCQDto> saveQuestion(@RequestHeader HttpHeaders headers, @RequestBody SaveMcqRequest saveMcqRequest) {
         return ResponseEntity.ok(mcqService.saveQuestion(saveMcqRequest));
     }
 
     @GetMapping
     public ResponseEntity<RetrieveMCQResponse> getQuestions(@RequestHeader HttpHeaders headers) {
-        log.info("GET /v1/questions");
         return ResponseEntity.ok(mcqService.retrieveMCQs());
     }
 
     @PostMapping("retrieve")
     public ResponseEntity<RetrieveMCQResponse> retrieveQuestion(@RequestHeader HttpHeaders headers, @RequestBody RetrieveMCQRequest retrieveMCQRequest) {
-        log.info("POST /v1/questions/retrieve");
         return ResponseEntity.ok(mcqService.retrieveMCQs(retrieveMCQRequest));
     }
 
