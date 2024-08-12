@@ -41,7 +41,7 @@ VALUES
 INSERT INTO qms_question.mcq
 (id, published_on,  created_by, published_by, status, stem, "options", created_ts, updated_ts)
 VALUES
-(1, '2024-07-23 08:00:00.000', 'Mr. Lee', 'Mr. Lee', 'Draft', '<p>Which of the following statements about covalent bonding is correct?</p>',
+(1, '2024-07-23 08:00:00.000', 'Mr. Lee', 'Mr. Lee', 'DRAFT', '<p>Which of the following statements about covalent bonding is correct?</p>',
 '[{"no":1,"text":"<p>Covalent bonds are formed by the transfer of electrons from one atom to another.</p>",
 "explanation":"This statement is incorrect. Covalent bonds involve the sharing of electron pairs between atoms, not the transfer of electrons.","isAnswer":false},
 {"no":2,"text":"<p>Covalent bonds are formed between metals and nonmetals.</p>",
@@ -96,7 +96,7 @@ VALUES
 INSERT INTO qms_question.mcq
 (id, published_on, created_by, published_by, status, stem, "options", created_ts, updated_ts)
 VALUES
-(3, '2024-07-23 08:00:00.000', 'Mr. Lee', 'Mr. Lee', 'Draft', '<p>Which of the following statements about enthalpy changes is correct?</p>',
+(3, '2024-07-23 08:00:00.000', 'Mr. Lee', 'Mr. Lee', 'DRAFT', '<p>Which of the following statements about enthalpy changes is correct?</p>',
 '[{"no":1,"text":"<p>The enthalpy change of a reaction is independent of the route taken.</p>",
 "explanation":"This statement is correct. According to Hess''s Law, the enthalpy change of a reaction is independent of the route taken.","isAnswer":true},
 {"no":2,"text":"<p>Exothermic reactions absorb heat from the surroundings.</p>",
@@ -118,11 +118,68 @@ VALUES
 (3, 4);
 
 
+
+-- MCQ Question
+INSERT INTO qms_question.mcq
+(id, published_on, created_by, published_by, status, stem, "options", created_ts, updated_ts)
+VALUES
+(4, '2024-07-23 08:00:00.000', 'Mr. Lee', 'Mr. Lee', 'PUBLISHED', '<p>Which of the following statements about oxidation numbers is correct?</p>',
+'[{"no":1,"text":"<p>The oxidation number of oxygen in peroxides is -2.</p>",
+"explanation":"This statement is incorrect. The oxidation number of oxygen in peroxides is -1.","isAnswer":false},
+{"no":2,"text":"<p>The oxidation number of hydrogen in hydrides is +1.</p>",
+"explanation":"This statement is incorrect. The oxidation number of hydrogen in hydrides is -1.","isAnswer":false},
+{"no":3,"text":"<p>The sum of the oxidation numbers in a neutral compound is zero.</p>",
+"explanation":"This statement is correct. The sum of the oxidation numbers in a neutral compound is indeed zero.","isAnswer":true},
+{"no":4,"text":"<p>The oxidation number of fluorine is always +1 in its compounds.</p>",
+"explanation":"This statement is incorrect. The oxidation number of fluorine is always -1 in its compounds.","isAnswer":false}]',
+ now(), now());
+
+-- Associated Skills
+INSERT INTO qms_question.mcq_skills
+(mcq_id, skill_id)
+VALUES
+(4, 9);
+
+-- Associated Topics
+INSERT INTO qms_question.mcq_topics
+(mcq_id, topic_id)
+VALUES
+(4, 5);
+
+
+-- MCQ Question
+INSERT INTO qms_question.mcq
+(id, published_on, created_by, published_by, status, stem, "options", created_ts, updated_ts)
+VALUES
+(5, '2024-07-23 08:00:00.000', 'Mr. Lee', 'Mr. Lee', 'PUBLISHED', '<p>Which of the following statements about the Ideal Gas Law is correct?</p>',
+'[{"no":1,"text":"<p>The Ideal Gas Law is only applicable at high pressures and low temperatures.</p>",
+"explanation":"This statement is incorrect. The Ideal Gas Law is most accurate at low pressures and high temperatures.","isAnswer":false},
+{"no":2,"text":"<p>The volume of an ideal gas is directly proportional to the number of moles at constant pressure and temperature.</p>",
+"explanation":"This statement is correct. According to the Ideal Gas Law (PV = nRT), the volume is directly proportional to the number of moles when pressure and temperature are constant.","isAnswer":true},
+{"no":3,"text":"<p>The Ideal Gas Law can be derived from Avogadro''s Law and Boyle''s Law alone.</p>",
+"explanation":"This statement is incorrect. The Ideal Gas Law is derived from Avogadro''s Law, Boyle''s Law, and Charles''s Law.","isAnswer":false},
+{"no":4,"text":"<p>The value of the gas constant R varies with the gas being considered.</p>",
+"explanation":"This statement is incorrect. The value of the gas constant R is universal and does not vary with the gas.","isAnswer":false}]',
+ now(), now());
+
+-- Associated Skills
+INSERT INTO qms_question.mcq_skills
+(mcq_id, skill_id)
+VALUES
+(5, 6);
+
+-- Associated Topics
+INSERT INTO qms_question.mcq_topics
+(mcq_id, topic_id)
+VALUES
+(5, 3);
+
+
 ALTER SEQUENCE qms_question.topic_id_seq
-	RESTART 10;
+	RESTART 11;
 
 ALTER SEQUENCE qms_question.skill_id_seq
-	RESTART 20;
+	RESTART 21;
 
 ALTER SEQUENCE qms_question.mcq_id_seq
-    RESTART 3;
+    RESTART 6;
