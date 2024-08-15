@@ -13,9 +13,10 @@ CREATE TABLE qms_question.mcq (
     archived_by varchar(255) NULL,
     published_on timestamp NULL,
     published_by varchar(255) NULL,
+    updated_by varchar(255) NULL,
+    updated_on timestamp NULL,
     created_by varchar(255) NULL,
-    updated_ts timestamp NULL,
-    created_ts timestamp NULL,
+    created_on timestamp NULL,
 	CONSTRAINT mcq_pkey PRIMARY KEY (id)
 );
 

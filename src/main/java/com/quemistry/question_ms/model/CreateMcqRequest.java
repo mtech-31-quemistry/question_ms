@@ -23,7 +23,7 @@ public class CreateMcqRequest {
     private String publishedBy;
     private Date archivedOn;
     private String archivedBy;
-    private Date updatedTs;
-    private Date createdTs;
+    private Date updatedOn;
+    private Date createdOn;
     private String createdBy;
 }

@@ -43,7 +43,7 @@ class MCQMapperTest {
         mcq.setPublishedBy("Author");
         mcq.setArchivedOn(new Date());
         mcq.setArchivedBy("Admin");
-        mcq.setCreatedTs(new Date());
+        mcq.setCreatedOn(new Date());
         mcq.setCreatedBy("Author");
 
         return mcq;
@@ -77,7 +77,7 @@ class MCQMapperTest {
         assertThat(mcqDto.getPublishedBy()).isEqualTo("Author");
         assertThat(mcqDto.getArchivedOn()).isNotNull();
         assertThat(mcqDto.getArchivedBy()).isEqualTo("Admin");
-        assertThat(mcqDto.getCreatedTs()).isNotNull();
+        assertThat(mcqDto.getCreatedOn()).isNotNull();
         assertThat(mcqDto.getCreatedBy()).isEqualTo("Author");
     }
 
@@ -116,7 +116,7 @@ class MCQMapperTest {
         createMcqRequest.setPublishedBy("Author");
         createMcqRequest.setArchivedOn(new Date());
         createMcqRequest.setArchivedBy("Admin");
-        createMcqRequest.setCreatedTs(new Date());
+        createMcqRequest.setCreatedOn(new Date());
         createMcqRequest.setCreatedBy("Author");
 
         // Act
@@ -131,7 +131,7 @@ class MCQMapperTest {
         assertThat(mcq.getPublishedBy()).isEqualTo("Author");
         assertThat(mcq.getArchivedOn()).isNotNull();
         assertThat(mcq.getArchivedBy()).isEqualTo("Admin");
-        assertThat(mcq.getCreatedTs()).isNotNull();
+        assertThat(mcq.getCreatedOn()).isNotNull();
         assertThat(mcq.getCreatedBy()).isEqualTo("Author");
     }
 }

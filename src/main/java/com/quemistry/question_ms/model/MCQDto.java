@@ -25,7 +25,9 @@ public class MCQDto {
     private String publishedBy;
     private Date archivedOn;
     private String archivedBy;
-    private Date updatedTs;
-    private Date createdTs;
+    private String updatedBy;
+    private Date updatedOn;
     private String createdBy;
+    private Date createdOn;
+
 }

@@ -15,7 +15,6 @@ import com.quemistry.question_ms.repository.MCQRepository;
 import com.quemistry.question_ms.repository.SkillRepository;
 import com.quemistry.question_ms.repository.TopicRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -79,11 +78,14 @@ public class MCQServiceImpl implements MCQService {
             }
 
         }
+        mcq.setUpdatedBy(saveMcqRequest.getUpdatedBy());
         if (saveMcqRequest.getStatus().equals(QuestionStatus.PUBLISHED)){
             mcq.setPublishedOn(new Date());
+            mcq.setPublishedBy(saveMcqRequest.getUpdatedBy());
         }
         if (saveMcqRequest.getStatus().equals(QuestionStatus.ARCHIVED)){
             mcq.setArchivedOn(new Date());
+            mcq.setArchivedBy(saveMcqRequest.getUpdatedBy());
         }
         mcq.setStatus(saveMcqRequest.getStatus());
         return mcqMapper.mcqToMcqDto(mcqRepository.save(mcq));
@@ -101,10 +103,9 @@ public class MCQServiceImpl implements MCQService {
     public RetrieveMCQResponse retrieveMCQs(RetrieveMCQRequest retrieveMCQRequest) {
         RetrieveMCQResponse retrieveMCQResponse = new RetrieveMCQResponse();
 
-        List<MCQ> mcqs;
         // paged
 //        if (retrieveMCQRequest.getPageNumber() != null && retrieveMCQRequest.getPageSize()!= null) {
-            log.info("paged");
+//            log.info("paged");
             Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
             Page<MCQ> mcqPage;
 

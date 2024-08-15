@@ -71,12 +71,16 @@ public class MCQ {
 
     private String archivedBy;
 
-    @UpdateTimestamp
-    private Date updatedTs;
+    private String updatedBy;
 
-    @CreationTimestamp
-    private Date createdTs;
+    @UpdateTimestamp
+    private Date updatedOn;
 
     private String createdBy;
+
+    @CreationTimestamp
+    private Date createdOn;
+
+
 
 }

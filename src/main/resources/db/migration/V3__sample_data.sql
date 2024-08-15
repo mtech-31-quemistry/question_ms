@@ -39,7 +39,7 @@ VALUES
 
 -- MCQ Question
 INSERT INTO qms_question.mcq
-(id, published_on,  created_by, published_by, status, stem, "options", created_ts, updated_ts)
+(id, published_on,  created_by, published_by, status, stem, "options", created_on, updated_on)
 VALUES
 (1, '2024-07-23 08:00:00.000', 'Mr. Lee', 'Mr. Lee', 'DRAFT', '<p>Which of the following statements about covalent bonding is correct?</p>',
 '[{"no":1,"text":"<p>Covalent bonds are formed by the transfer of electrons from one atom to another.</p>",
@@ -67,7 +67,7 @@ VALUES
 
 -- MCQ Question
 INSERT INTO qms_question.mcq
-(id, published_on, created_by, published_by, status, stem, "options",  created_ts, updated_ts)
+(id, published_on, created_by, published_by, status, stem, "options",  created_on, updated_on)
 VALUES
 (2, '2024-07-23 08:00:00.000',  'Mr. Lee', 'Mr. Lee', 'DRAFT', '<p>Which of the following statements about electron configuration is correct?</p>',
 '[{"no":1,"text":"<p>The 3d subshell is filled before the 4s subshell.</p>",
@@ -94,7 +94,7 @@ VALUES
 
 -- MCQ Question
 INSERT INTO qms_question.mcq
-(id, published_on, created_by, published_by, status, stem, "options", created_ts, updated_ts)
+(id, published_on, created_by, published_by, status, stem, "options", created_on, updated_on)
 VALUES
 (3, '2024-07-23 08:00:00.000', 'Mr. Lee', 'Mr. Lee', 'DRAFT', '<p>Which of the following statements about enthalpy changes is correct?</p>',
 '[{"no":1,"text":"<p>The enthalpy change of a reaction is independent of the route taken.</p>",
@@ -121,7 +121,7 @@ VALUES
 
 -- MCQ Question
 INSERT INTO qms_question.mcq
-(id, published_on, created_by, published_by, status, stem, "options", created_ts, updated_ts)
+(id, published_on, created_by, published_by, status, stem, "options", created_on, updated_on)
 VALUES
 (4, '2024-07-23 08:00:00.000', 'Mr. Lee', 'Mr. Lee', 'PUBLISHED', '<p>Which of the following statements about oxidation numbers is correct?</p>',
 '[{"no":1,"text":"<p>The oxidation number of oxygen in peroxides is -2.</p>",
@@ -149,7 +149,7 @@ VALUES
 
 -- MCQ Question
 INSERT INTO qms_question.mcq
-(id, published_on, created_by, published_by, status, stem, "options", created_ts, updated_ts)
+(id, published_on, created_by, published_by, status, stem, "options", created_on, updated_on)
 VALUES
 (5, '2024-07-23 08:00:00.000', 'Mr. Lee', 'Mr. Lee', 'PUBLISHED', '<p>Which of the following statements about the Ideal Gas Law is correct?</p>',
 '[{"no":1,"text":"<p>The Ideal Gas Law is only applicable at high pressures and low temperatures.</p>",

@@ -27,7 +27,9 @@ public class SaveMcqRequest {
     private String publishedBy;
     private Date closedOn;
     private String closedBy;
-    private Date updatedTs;
-    private Date createdTs;
+    private String updatedBy;
+    private Date updatedOn;
     private String createdBy;
+    private Date createdOn;
+
 }
