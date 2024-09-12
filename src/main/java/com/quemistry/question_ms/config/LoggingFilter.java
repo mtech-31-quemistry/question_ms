@@ -40,16 +40,22 @@ public class LoggingFilter implements Filter {
         // Now you can read the buffered request in the filter
         String requestBody = extractRequestBody(bufferedRequest);
         Map<String, String> headers = extractHeaders(request);
+        String url = request.getRequestURL().toString();
+        boolean isHealthCheck = (url.contains("health") || url.contains("actuator"));
 
 //        // log information from the httpServletRequest like url, params, etc
-        log.info("REQUEST RECEIVED, path: {}, method: {}, headers: {}, body: {},",request.getRequestURL(), request.getMethod(), headers, requestBody);
-
+        if (!isHealthCheck) {
+            log.info("REQUEST RECEIVED, path: {}, method: {}, headers: {}, body: {},",request.getRequestURL(), request.getMethod(), headers, requestBody);
+        }
         filterChain.doFilter(bufferedRequest, servletResponse);
         // log information regarding the httpServletResponse like status code, etc
         Map<String, String> responseHeaders = extractResponseHeaders(response);
 //        String responseBody = extractResponseBody(bufferedResponse); // not working yet
-        log.info("RESPONSE, path: {}, method: {}, headers: {}, status: {}",request.getRequestURL(), request.getMethod(), responseHeaders, response.getStatus());
-//        log.info("RESPONSE, path: {}, method: {}, headers: {}, status: {}, response: {}",request.getRequestURL(), request.getMethod(), responseHeaders, response.getStatus(), responseBody);
+
+        if (!isHealthCheck) {
+            log.info("RESPONSE, path: {}, method: {}, headers: {}, status: {}", request.getRequestURL(), request.getMethod(), responseHeaders, response.getStatus());
+        }
+        //        log.info("RESPONSE, path: {}, method: {}, headers: {}, status: {}, response: {}",request.getRequestURL(), request.getMethod(), responseHeaders, response.getStatus(), responseBody);
         // Ensure the response body is written back to the client
 //        bufferedResponse.copyBodyToResponse();
     }
