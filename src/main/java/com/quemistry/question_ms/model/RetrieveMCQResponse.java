@@ -23,4 +23,6 @@ public class RetrieveMCQResponse {
 
     private Long totalRecords;
 
+    private String keywords;
+
 }

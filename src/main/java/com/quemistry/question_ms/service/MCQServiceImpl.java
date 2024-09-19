@@ -111,15 +111,15 @@ public class MCQServiceImpl implements MCQService {
 
             // no filter
             log.info("no topic or skill in request, to return all");
-            if (retrieveMCQRequest.getTopics() == null && retrieveMCQRequest.getSkills() == null){
+            if ((retrieveMCQRequest.getTopics() == null || retrieveMCQRequest.getTopics().size() == 0)
+                    && (retrieveMCQRequest.getSkills() == null || retrieveMCQRequest.getSkills().size() == 0)){
                 mcqPage  = mcqRepository.findAll(pageable);
-
             } else {
                 log.info("filter by topic, skill");
-                if (retrieveMCQRequest.getTopics() == null){
+                if (retrieveMCQRequest.getTopics() == null || retrieveMCQRequest.getTopics().size() == 0){
                     retrieveMCQRequest.setTopics(Collections.emptyList());
                 }
-                if (retrieveMCQRequest.getSkills() == null){
+                if (retrieveMCQRequest.getSkills() == null || retrieveMCQRequest.getSkills().size() == 0){
                     retrieveMCQRequest.setSkills(Collections.emptyList());
                 }
                 // got filter by topic, skill
