@@ -182,67 +182,6 @@ class MCQServiceImplTest {
         verify(mcqRepository, times(1)).save(any(MCQ.class));
     }
 
-//    @Test
-//    void testRetrieveMCQByTopic() {
-//        // Mock request object
-//        RetrieveMCQRequest request = new RetrieveMCQRequest();
-//        request.setPageNumber(null);
-//        request.setTopics(List.of(1L, 2L)); // Example topic IDs
-//
-//        // Mock repositories and mappers
-//        List<MCQ> mockMCQs = new ArrayList<>(); // Example mock MCQs
-//        when(mcqRepository.findByTopicOrSkill(anyList(),anyList())).thenReturn(mockMCQs);
-//
-//        // Call the service method
-//        RetrieveMCQResponse response = mcqService.retrieveMCQs(request);
-//
-//        // Assert the response
-//        assertNotNull(response);
-//        assertTrue(response.getMcqs().isEmpty()); // Verify that MCQ list is empty as per mock behavior
-//
-//        // Additional assertions can be added based on your actual business logic
-//    }
-
-//    @Test
-//    void testRetrieveMCQsWithoutPaginationWithoutFilter() {
-//        // Arrange
-//        RetrieveMCQRequest request = new RetrieveMCQRequest();
-//
-//        List<MCQ> mcqs = Arrays.asList(new MCQ(), new MCQ());
-//        List<MCQDto> mcqDtos = Arrays.asList(new MCQDto(), new MCQDto());
-//
-//        when(mcqRepository.findAll()).thenReturn(mcqs);
-//        when(mcqMapper.mcqsToMcqDtos(anyList())).thenReturn(mcqDtos);
-//
-//        // Act
-//        RetrieveMCQResponse response = mcqService.retrieveMCQs(request);
-//
-//        // Assert
-//        assertEquals(2, response.getMcqs().size());
-//        verify(mcqRepository, times(1)).findAll();
-//    }
-
-//    @Test
-//    void testRetrieveMCQsWithoutPaginationWithFilter() {
-//        // Arrange
-//        RetrieveMCQRequest request = new RetrieveMCQRequest();
-//        request.setTopics(Arrays.asList(1L));
-//        request.setSkills(Arrays.asList(2L));
-//
-//        List<MCQ> mcqs = Arrays.asList(new MCQ(), new MCQ());
-//        List<MCQDto> mcqDtos = Arrays.asList(new MCQDto(), new MCQDto());
-//
-//        when(mcqRepository.findByTopicOrSkill(anyList(), anyList())).thenReturn(mcqs);
-//        when(mcqMapper.mcqsToMcqDtos(anyList())).thenReturn(mcqDtos);
-//
-//        // Act
-//        RetrieveMCQResponse response = mcqService.retrieveMCQs(request);
-//
-//        // Assert
-//        assertEquals(2, response.getMcqs().size());
-//        verify(mcqRepository, times(1)).findByTopicOrSkill(anyList(), anyList());
-//    }
-
     @Test
     void testRetrieveMCQsWithPaginationAndFilter() {
         // Arrange
@@ -256,7 +195,35 @@ class MCQServiceImplTest {
         Page<MCQ> mcqPage = new PageImpl<>(mcqs, PageRequest.of(0, 2), 2);
         List<MCQDto> mcqDtos = Arrays.asList(new MCQDto(), new MCQDto());
 
-        when(mcqRepository.findByTopicOrSkill(anyList(), anyList(), any(Pageable.class))).thenReturn(mcqPage);
+        when(mcqRepository.findByTopicOrSkill(anyList(), anyList(), anyList(), any(Pageable.class))).thenReturn(mcqPage);
+        when(mcqMapper.mcqsToMcqDtos(anyList())).thenReturn(mcqDtos);
+
+        // Act
+        RetrieveMCQResponse response = mcqService.retrieveMCQs(request);
+
+        // Assert
+        assertEquals(2, response.getMcqs().size());
+        assertEquals(0, response.getPageNumber());
+        assertEquals(2, response.getPageSize());
+        assertEquals(1, response.getTotalPages());
+        assertEquals(2, response.getTotalRecords());
+    }
+
+    @Test
+    void testRetrieveMCQsWithPaginationAndTopicSkillStatus() {
+        // Arrange
+        RetrieveMCQRequest request = new RetrieveMCQRequest();
+        request.setTopics(Arrays.asList(1L));
+        request.setSkills(Arrays.asList(2L));
+        request.setStatuses(Arrays.asList(QuestionStatus.PUBLISHED));
+        request.setPageNumber(0);
+        request.setPageSize(2);
+
+        List<MCQ> mcqs = Arrays.asList(new MCQ(), new MCQ());
+        Page<MCQ> mcqPage = new PageImpl<>(mcqs, PageRequest.of(0, 2), 2);
+        List<MCQDto> mcqDtos = Arrays.asList(new MCQDto(), new MCQDto());
+
+        when(mcqRepository.findByTopicSkillStatus(anyList(), anyList(), anyList(), anyList(), any(Pageable.class))).thenReturn(mcqPage);
         when(mcqMapper.mcqsToMcqDtos(anyList())).thenReturn(mcqDtos);
 
         // Act

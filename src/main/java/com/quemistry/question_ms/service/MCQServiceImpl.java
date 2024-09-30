@@ -103,55 +103,47 @@ public class MCQServiceImpl implements MCQService {
     public RetrieveMCQResponse retrieveMCQs(RetrieveMCQRequest retrieveMCQRequest) {
         RetrieveMCQResponse retrieveMCQResponse = new RetrieveMCQResponse();
 
-        // paged
-//        if (retrieveMCQRequest.getPageNumber() != null && retrieveMCQRequest.getPageSize()!= null) {
-//            log.info("paged");
-            Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
-            Page<MCQ> mcqPage;
+        Pageable pageable = PageRequest.of(retrieveMCQRequest.getPageNumber(), retrieveMCQRequest.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
+        Page<MCQ> mcqPage;
 
-            // no filter
-            log.info("no topic or skill in request, to return all");
-            if ((retrieveMCQRequest.getTopics() == null || retrieveMCQRequest.getTopics().isEmpty())
-                    && (retrieveMCQRequest.getSkills() == null || retrieveMCQRequest.getSkills().isEmpty())){
-                mcqPage  = mcqRepository.findAll(pageable);
+        // no filter
+        log.info("no topic or skill in request, to return all");
+        if ((retrieveMCQRequest.getTopics() == null || retrieveMCQRequest.getTopics().isEmpty())
+                && (retrieveMCQRequest.getSkills() == null || retrieveMCQRequest.getSkills().isEmpty())){
+            mcqPage  = mcqRepository.findAll(pageable);
+        } else {
+            log.info("filter by topic, skill");
+            if (retrieveMCQRequest.getTopics() == null || retrieveMCQRequest.getTopics().isEmpty()){
+                retrieveMCQRequest.setTopics(Collections.emptyList());
+            }
+            if (retrieveMCQRequest.getSkills() == null || retrieveMCQRequest.getSkills().isEmpty()){
+                retrieveMCQRequest.setSkills(Collections.emptyList());
+            }
+            // got filter by topic, skill
+
+
+            if (retrieveMCQRequest.getStatuses().isEmpty()){
+                mcqPage = mcqRepository.findByTopicOrSkill(
+                        retrieveMCQRequest.getTopics(),
+                        retrieveMCQRequest.getSkills(),
+                        retrieveMCQRequest.getExcludeIds(),
+                        pageable);
             } else {
-                log.info("filter by topic, skill");
-                if (retrieveMCQRequest.getTopics() == null || retrieveMCQRequest.getTopics().isEmpty()){
-                    retrieveMCQRequest.setTopics(Collections.emptyList());
-                }
-                if (retrieveMCQRequest.getSkills() == null || retrieveMCQRequest.getSkills().isEmpty()){
-                    retrieveMCQRequest.setSkills(Collections.emptyList());
-                }
-                // got filter by topic, skill
-                mcqPage = mcqRepository.findByTopicOrSkill(retrieveMCQRequest.getTopics(), retrieveMCQRequest.getSkills(), pageable);
+                mcqPage = mcqRepository.findByTopicSkillStatus(
+                        retrieveMCQRequest.getTopics(),
+                        retrieveMCQRequest.getSkills(),
+                        retrieveMCQRequest.getStatuses(),
+                        retrieveMCQRequest.getExcludeIds(),
+                        pageable);
             }
 
-            retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqPage.getContent()));
-            retrieveMCQResponse.setPageSize(retrieveMCQRequest.getPageSize());
-            retrieveMCQResponse.setPageNumber(retrieveMCQRequest.getPageNumber());
-            retrieveMCQResponse.setTotalPages(mcqPage.getTotalPages());
-            retrieveMCQResponse.setTotalRecords(mcqPage.getTotalElements());
+        }
 
-
-//        }
-//        else { // not paged
-//            log.info("not paged");
-//            // no filter
-//            if (retrieveMCQRequest.getTopics() == null && retrieveMCQRequest.getSkills() == null) {
-//                log.info("no topic or skill in request, to return all");
-//                return retrieveMCQs();
-//            } else { // filter by topic, skill
-//                log.info("filter by topic, skill");
-//                if (retrieveMCQRequest.getTopics() == null){
-//                    retrieveMCQRequest.setTopics(Collections.emptyList());
-//                }
-//                if (retrieveMCQRequest.getSkills() == null){
-//                    retrieveMCQRequest.setSkills(Collections.emptyList());
-//                }
-//                mcqs = mcqRepository.findByTopicOrSkill(retrieveMCQRequest.getTopics(), retrieveMCQRequest.getSkills());
-//            }
-//            retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqs));
-//        }
+        retrieveMCQResponse.setMcqs(mcqMapper.mcqsToMcqDtos(mcqPage.getContent()));
+        retrieveMCQResponse.setPageSize(retrieveMCQRequest.getPageSize());
+        retrieveMCQResponse.setPageNumber(retrieveMCQRequest.getPageNumber());
+        retrieveMCQResponse.setTotalPages(mcqPage.getTotalPages());
+        retrieveMCQResponse.setTotalRecords(mcqPage.getTotalElements());
         return retrieveMCQResponse;
     }
 
